@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SubscrybeFlow</title>
-  <!-- Tailwind CSS CDN -->
+  <!-- tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#eef3ff] text-gray-900">
 
-  <!-- Navbar -->
+  <!-- navbar -->
   <header class="bg-white shadow-sm">
     <div class="container mx-auto px-4 py-4 flex justify-between items-center">
       <div class="flex items-center space-x-2">
@@ -19,9 +19,8 @@
         <span class="text-lg font-bold">SubscrybeFlow</span>
       </div>
       <nav class="hidden md:flex space-x-6 text-sm font-medium">
-        <a href="#" class="text-gray-700 hover:text-gray-900">Início</a>
-        <a href="#" class="text-gray-500 hover:text-gray-900">Recursos</a>
-        <a href="#" class="text-gray-500 hover:text-gray-900">Sobre</a>
+        <a href="homepage.html" class="text-gray-700 hover:text-gray-900">Início</a>
+        <a href="sobre.html" class="text-gray-500 hover:text-gray-900">Sobre</a>
       </nav>
       <div class="flex items-center space-x-4 text-sm font-medium">
         <a href="login.html" class="text-gray-900 hover:underline">Login/Cadastra-se</a>
@@ -29,7 +28,7 @@
     </div>
   </header>
 
-  <!-- Hero Section -->
+  <!-- cards de info -->
   <section class="text-center py-24 px-4 bg-[#eef3ff]"> 
     <h1 class="text-4xl md:text-5xl font-bold leading-tight">
       Organize suas <span class="text-blue-600">assinaturas</span><br /> com facilidade
@@ -38,11 +37,6 @@
       Nunca mais perca o controle dos seus planos e assinaturas.
       Gerencie tudo em um só lugar, receba lembretes e tenha relatórios completos dos seus gastos.
     </p>
-
-    <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-      <a href="#" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-gray-800 font-medium">Começar Grátis</a>  
-    </div>
-
     <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-xl mx-auto text-sm text-gray-700">
       <div class="flex items-center justify-center space-x-2">
         <svg class="h-4 w-4 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -104,7 +98,7 @@
     </section>
   </section>
 
-    <!-- Planos -->
+    <!-- planos -->
     <section id="planos" class="py-10 px-2 bg-gray-20">
       <div class="max-w-6xl mx-auto text-center mb-16">
         <h2 class="text-3xl font-bold mb-4">Escolha seu plano</h2>
@@ -113,25 +107,26 @@
         </p>
       </div>
       <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-        <!-- Básico -->
+        <!-- basico -->
         <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
           <h3 class="text-xl font-semibold mb-2">Básico</h3>
           <p class="text-3xl font-bold mb-1">Grátis</p>
+          <p class="mb-8"></p>
           <ul class="text-gray-600 mb-6 space-y-1 text-sm">
             <li>✔ Até 5 assinaturas</li>
             <li>✔ Lembretes básicos</li>
             <li>✔ Relatório mensal</li>
             <li>✔ Suporte por email</li>
           </ul>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-gray-700 mt-auto">
-            Começar Grátis
-          </button>
+          <a href="login.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-gray-700 mt-auto">Começar grátis</a>
         </div>
-        <!-- Premium -->
+        <!-- premium -->
         <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
           <h3 class="text-xl font-semibold mb-2">Premium</h3>
-          <p class="text-3xl font-bold mb-1">R$ 9,90</p>
-          <p class="text-gray-500 mb-4">por mês</p>
+          <div class="flex items-end justify-center space-x-1 mb-4">
+            <p class="text-3xl font-bold mb-1">R$ 9,90</p>
+            <span class="text-gray-500 mb-1">por mês</span>
+            </div>
           <ul class="text-gray-600 mb-6 space-y-1 text-sm">
             <li>✔ Assinaturas ilimitadas</li>
             <li>✔ Lembretes personalizados</li>
@@ -140,14 +135,11 @@
             <li>✔ Suporte prioritário</li>
             <li>✔ Exportação PDF/CSV</li>
           </ul>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-gray-700 mt-auto">
-            Experimentar Premium
-          </button>
+          <a href="sobre.html" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-gray-700 mt-auto">Entre em contato</a>
         </div>
       </div>
     </section>
-
-    <!-- Call to Action -->
+    <!-- anuncio final -->
     <section class="py-20 px-4 bg-blue-600 text-white text-center">
       <h2 class="text-3xl md:text-4xl font-bold mb-6">
         Pronto para organizar suas assinaturas?
@@ -155,11 +147,9 @@
       <p class="text-lg mb-8 max-w-2xl mx-auto">
         Junte-se a milhares de usuários que já economizam tempo e dinheiro gerenciando suas assinaturas de forma inteligente.
       </p>
-      <button class="bg-white text-black px-8 py-3 rounded text-lg hover:bg-gray-100 font-semibold">
-        Começar grátis
-      </button>
+      <a href="login.html" class="bg-white text-black px-8 py-3 rounded text-lg hover:bg-gray-100 font-semibold">Começar grátis</a>
     </section>
-    <!-- Footer -->
+    <!-- footer -->
     <footer class="py-12 px-4 bg-gray-900 text-white text-center">
       <div class="flex justify-center items-center space-x-2 mb-4">
         <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold">
@@ -174,6 +164,5 @@
         © 2025 SubscrybeFlow. Todos os direitos reservados.
       </div>
     </footer>
-
   </body>
 </html>
