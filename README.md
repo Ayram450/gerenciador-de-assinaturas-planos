@@ -44,8 +44,8 @@ Sistema de Gestão de Assinaturas e Planos
 
 ## 👩‍💻 Desenvolvedores
 
-- **Nome do Desenvolvedor** – [GitHub](#) – Função  
-- **Outro Desenvolvedor** – [GitHub](#) – Função  
+- **Marya Clara** – [Ayram450](#) – Back-end  
+- **Vitória Oliveira** – [vyvisz](#) – Front-end  
 
 ---
 
