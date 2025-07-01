@@ -67,29 +67,37 @@
           <button type="submit" class="w-full bg-black text-white py-2 rounded">Criar conta</button>
         </form>
       </div>
-    </div>
-
-    <script>
+      <script>
       const loginTab = document.getElementById('login-tab');
       const signupTab = document.getElementById('signup-tab');
       const loginForm = document.getElementById('login-form');
       const signupForm = document.getElementById('signup-form');
-
-      loginTab.addEventListener('click', () => {
+      
+      loginTab.addEventListener('click', (event) => {
+        event.preventDefault(); // Impede comportamento padrão do botão
         loginForm.classList.remove('hidden');
         signupForm.classList.add('hidden');
+
+        // Estilo das abas
         loginTab.classList.add('bg-black', 'text-white');
+        loginTab.classList.remove('bg-gray-200');
+
         signupTab.classList.remove('bg-black', 'text-white');
         signupTab.classList.add('bg-gray-200');
       });
-
-      signupTab.addEventListener('click', () => {
+      signupTab.addEventListener('click', (event) => {
+        event.preventDefault(); // Impede comportamento padrão do botão
         signupForm.classList.remove('hidden');
         loginForm.classList.add('hidden');
+
+        // Estilo das abas
         signupTab.classList.add('bg-black', 'text-white');
+        signupTab.classList.remove('bg-gray-200');
+
         loginTab.classList.remove('bg-black', 'text-white');
         loginTab.classList.add('bg-gray-200');
-      });
-    </script>
-  </body>
+        });
+        </script>
+        </div>
+      </body>
 </html>
