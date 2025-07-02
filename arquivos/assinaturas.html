@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Gerenciar Assinaturas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-xl font-bold">SubscrybeFlow</h1>
+        <nav>
+          <a href="index.html" class="text-blue-600 hover:underline">Início</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Conteúdo principal -->
+    <main class="container mx-auto px-4 py-8">
+      <!-- Título -->
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 mb-2">Gerenciar Assinaturas</h2>
+        <p class="text-gray-600">Gerencie suas assinaturas e planos de forma simples e eficiente</p>
+      </div>
+
+      <!-- Estatísticas -->
+      <div class="grid md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white shadow rounded-lg p-4">
+          <p class="text-sm font-medium text-gray-600">Total de Assinaturas</p>
+          <p class="text-2xl font-bold" id="total-assinaturas">--</p>
+        </div>
+        <div class="bg-white shadow rounded-lg p-4">
+          <p class="text-sm font-medium text-gray-600">Gasto Mensal</p>
+          <p class="text-2xl font-bold" id="gastos">--</p>
+        </div>
+        <div class="bg-white shadow rounded-lg p-4">
+          <p class="text-sm font-medium text-gray-600">Próximos Vencimentos</p>
+          <p class="text-2xl font-bold" id="vencimentos">--</p>
+        </div>
+        <div class="bg-white shadow rounded-lg p-4">
+          <p class="text-sm font-medium text-gray-600">Economia Anual</p>
+          <p class="text-2xl font-bold text-green-600" id="economia-anual">--</p>
+        </div>
+      </div>
+
+      <!-- Ações rápidas -->
+      <div class="grid md:grid-cols-2 gap-6 mb-8">
+        <div class="bg-white shadow rounded-lg p-4">
+          <h3 class="text-lg font-semibold mb-4">Ações Rápidas</h3>
+          <div class="space-y-3">
+            <button class="w-full flex items-center bg-black text-white px-4 py-2 rounded hover:bg-gray-800">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M12 4v16m8-8H4" />
+              </svg>
+              Adicionar Nova Assinatura
+            </button>
+            <a href="relatorios.html" class="w-full flex items-center border px-4 py-2 rounded hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M9 17v-2h6v2m2 4H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z" />
+              </svg>
+              Ver Relatórios
+            </a>
+            <a href="lembretes.html" class="w-full flex items-center border px-4 py-2 rounded hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M15 17h5l-1.405-1.405M4 4l16 16" />
+              </svg>
+              Configurar Lembretes
+            </a>
+            <a href="pagamentos.html" class="w-full flex items-center border px-4 py-2 rounded hover:bg-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path d="M12 8c-3.866 0-7 2.686-7 6s3.134 6 7 6 7-2.686 7-6-3.134-6-7-6z" />
+              </svg>
+              Gerenciar Pagamentos
+            </a>
+          </div>
+        </div>
+
+        <!-- Formulário adicionar (oculto ou manipulado dinamicamente) -->
+        <div class="bg-white shadow rounded-lg p-4">
+          <h3 class="text-lg font-semibold mb-4">Adicionar Assinatura</h3>
+          <form class="space-y-3">
+            <input type="text" placeholder="Nome" class="w-full border px-4 py-2 rounded" />
+            <input type="text" placeholder="Empresa" class="w-full border px-4 py-2 rounded" />
+            <input type="number" placeholder="Preço" class="w-full border px-4 py-2 rounded" />
+
+            <!-- Dia e Mês -->
+            <div class="flex gap-2">
+                <input type="number" placeholder="Dia" min="1" max="31" class="w-1/2 border px-4 py-2 rounded" />
+                <select class="w-1/2 border px-4 py-2 rounded">
+                <option value="" disabled selected>Mês</option>
+                <option value="01">Janeiro</option>
+                <option value="02">Fevereiro</option>
+                <option value="03">Março</option>
+                <option value="04">Abril</option>
+                <option value="05">Maio</option>
+                <option value="06">Junho</option>
+                <option value="07">Julho</option>
+                <option value="08">Agosto</option>
+                <option value="09">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
+                </select>
+            </div>
+
+            <!-- Repetir mensalmente -->
+            <div class="flex items-center">
+                <input type="checkbox" id="repetir-mes" class="mr-2" />
+                <label for="repetir-mes" class="text-sm">Repetir todo mês</label>
+            </div>
+            
+            <select class="w-full border px-4 py-2 rounded" name="categoria" id="categoria">
+                <option value="" disabled selected>Selecione a categoria</option>
+                <option value="entretenimento">Entretenimento</option>
+                <option value="musica">Música</option>
+                <option value="jogos">Jogos</option>
+                <option value="educacao">Educação</option>
+                <option value="produtividade">Produtividade</option>
+                <option value="design">Design / Criativo</option>
+                <option value="financeiro">Financeiro</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="saude">Saúde</option>
+                <option value="transporte">Transporte</option>
+                <option value="casa">Casa e Serviços</option>
+                <option value="pets">Pets</option>
+                <option value="compras">Compras / Delivery</option>
+                <option value="internet">Internet / Dados</option>
+                <option value="softwares">Softwares / Apps</option>
+                <option value="beleza">Beleza e Estética</option>
+                <option value="bem-estar">Bem-estar</option>
+                <option value="comunicacao">Comunicação</option>
+                <option value="outros">Outros</option>
+                </select>
+
+            <select class="w-full border px-4 py-2 rounded">
+                <option value="" disabled selected>Método de Pagamento</option>
+                <option value="debito">Debito</option>
+                <option value="credito">Crédito</option>
+                <option value="boleto">Boleto</option>
+                <option value="pix">Pix</option>
+            </select>
+
+            <button type="submit" class="w-full bg-black text-white py-2 rounded">Salvar</button>
+            </form>
+        </div>
+      </div>
+
+      <!-- Lista de assinaturas TESTEE-->
+        <div class="bg-white shadow rounded-lg p-4">
+        <h3 class="text-lg font-semibold mb-4">Minhas Assinaturas</h3>
+        <div class="space-y-4">
+            <div class="p-4 border rounded flex justify-between items-center">
+            <div>
+                <p class="font-semibold">Netflix - Premium Plan</p>
+                <p class="text-sm text-gray-500">R$ 45,90 | Vencimento: 15/06</p>
+            </div>
+            <span class="text-sm text-green-600 font-medium">Ativa</span>
+            </div>
+        </div>
+        </div>
+    </main>
+  </body>
+</html>
