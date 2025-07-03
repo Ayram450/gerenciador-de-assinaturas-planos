@@ -7,21 +7,30 @@
   </head>
   <body class="min-h-screen bg-gray-50">
     <!-- Header -->
-    <header class="bg-white shadow p-4">
-      <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-xl font-bold">SubscrybeFlow</h1>
-        <nav>
-          <a href="index.html" class="text-blue-600 hover:underline">Início</a>
-        </nav>
+  <!-- navbar -->
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
+          <span class="text-white font-bold">S</span>
+        </div>
+        <span class="text-lg font-bold">SubscrybeFlow</span>
       </div>
-    </header>
+      <nav class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="assinaturas.html" class="text-gray-700 hover:text-gray-900">Assinaturas</a>
+        <a href="perfil.html" class="text-gray-500 hover:text-gray-900">Perfil</a>
+      </nav>
+      <div class="flex items-center space-x-4 text-sm font-medium">
+        <a href="login.html" class="text-gray-900 hover:underline">Sair</a>
+      </div>
+    </div>
+  </header>
 
     <!-- Conteúdo principal -->
     <main class="container mx-auto px-4 py-8">
       <!-- Título -->
       <div class="mb-8">
         <h2 class="text-3xl font-bold text-gray-900 mb-2">Gerenciar Assinaturas</h2>
-        <p class="text-gray-600">Gerencie suas assinaturas e planos de forma simples e eficiente</p>
       </div>
 
       <!-- Estatísticas -->
