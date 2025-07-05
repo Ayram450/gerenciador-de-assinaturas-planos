@@ -161,7 +161,7 @@
                 <option value="pix">Pix</option>
             </select>
 
-            <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Salvar</button>
+            <button onclick="mostrarToast()" type="submit" class="w-full bg-blue-600 text-white py-2 rounded">Salvar</button>
             </form>
         </div>
       </div>
@@ -177,5 +177,24 @@
         </div>
         </div>
     </main>
+
+    <!-- Toast de sucesso -->
+    <div id="toast-success" class="fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg hidden z-50" role="alert">
+    <strong class="font-semibold">Sucesso!</strong>
+    <span class="block sm:inline">Suas informações foram salvas.</span>
+    </div>
+
+    <script>
+    function mostrarToast() {
+        const toast = document.getElementById("toast-success");
+        toast.classList.remove("hidden");
+        
+        // Oculta após 4 segundos
+        setTimeout(() => {
+        toast.classList.add("hidden");
+        }, 4000);
+    }
+    </script>
+
   </body>
 </html>
