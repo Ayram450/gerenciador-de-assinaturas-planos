@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamentos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Voltar -->
+    <div class="mb-6">
+      <a href="assinaturas.html" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Voltar ao painel
+      </a>
+    </div>
+
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Pagamentos</h1>
+      <p class="text-gray-600">Gerencie seus pagamentos</p>
+    </div>
+
+    <!-- Estatísticas -->
+    <div class="grid md:grid-cols-4 gap-6 mb-8">
+      <div class="bg-white p-4 shadow rounded-lg">
+        <p class="text-sm text-gray-600">Total de Pagamentos</p>
+        <div class="text-2xl font-bold mt-2">--</div>
+      </div>
+      <div class="bg-white p-4 shadow rounded-lg">
+        <p class="text-sm text-gray-600">Pagamentos Pendentes</p>
+        <div class="text-2xl font-bold text-yellow-600 mt-2">--</div>
+      </div>
+      <div class="bg-white p-4 shadow rounded-lg">
+        <p class="text-sm text-gray-600">Total Pago este Mês</p>
+        <div class="text-2xl font-bold text-green-600 mt-2">R$ --</div>
+      </div>
+      <div class="bg-white p-4 shadow rounded-lg">
+        <p class="text-sm text-gray-600">Pagamentos Falharam</p>
+        <div class="text-2xl font-bold text-red-600 mt-2">--</div>
+      </div>
+    </div>
+
+    <!-- Filtros e Busca -->
+    <div class="bg-white p-4 shadow rounded-lg mb-6">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex-1">
+          <div class="relative">
+            <input
+              type="text"
+              placeholder="Buscar por empresa ou assinatura..."
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+            <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+        </div>
+        <div class="flex gap-4 items-center">
+          <select
+            class="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="all">Todos</option>
+            <option value="pending">Pendentes</option>
+            <option value="completed">Pagos</option>
+            <option value="failed">Falharam</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lista de Pagamentos -->
+    <div class="bg-white p-4 shadow rounded-lg">
+      <h2 class="text-lg font-semibold text-gray-800 mb-4">Histórico de Pagamentos</h2>
+      <div class="text-gray-500 text-sm">Nenhum pagamento registrado ainda.</div>
+    </div>
+  </div>
+</body>
+</html>
