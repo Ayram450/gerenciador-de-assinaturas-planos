@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatórios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Voltar -->
+    <div class="mb-6">
+      <a href="assinaturas.html" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+        Voltar ao painel
+      </a>
+    </div>
+
+    <!-- Cabeçalho -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Relatórios</h1>
+      <p class="text-gray-600">Gere e exporte relatórios detalhados das suas assinaturas</p>
+    </div>
+
+    <!-- Filtros -->
+    <div class="bg-white shadow rounded-lg p-6 mb-8">
+      <h2 class="text-xl font-semibold mb-1">Gerar Novo Relatório</h2>
+      <p class="text-gray-500 mb-4">Selecione o tipo de relatório e período desejado</p>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="block text-sm font-medium mb-2">Tipo de Relatório</label>
+          <select class="w-full border px-4 py-2 rounded-lg">
+            <option disabled selected>Selecione o tipo</option>
+            <option>Resumo Financeiro</option>
+            <option>Histórico de Assinaturas</option>
+            <option>Comparativo de Despesas</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2">Período</label>
+          <select class="w-full border px-4 py-2 rounded-lg">
+            <option disabled selected>Selecione o período</option>
+            <option>Mês Atual</option>
+            <option>Último Mês</option>
+            <option>Últimos 3 Meses</option>
+            <option>Ano Atual</option>
+            <option>Ano Passado</option>
+          </select>
+        </div>
+        <div class="flex items-end">
+          <button class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Gerar Relatório</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resumo e Histórico -->
+    <div class="grid md:grid-cols-2 gap-8 mb-8">
+      <div class="bg-white shadow rounded-lg">
+        <div class="flex items-center justify-between px-6 py-4 border-b">
+          <div>
+            <h3 class="text-lg font-semibold">Resumo Financeiro</h3>
+            <p class="text-sm text-gray-500">Gastos por mês em 2024</p>
+          </div>
+          <div class="flex space-x-2">
+            <button class="flex items-center border rounded px-3 py-1 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text-icon lucide-file-text">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    <path d="M10 9H8"/>
+                    <path d="M16 13H8"/>
+                    <path d="M16 17H8"/>
+                </svg>
+              PDF
+            </button>
+            <button class="flex items-center border rounded px-3 py-1 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-spreadsheet-icon lucide-file-spreadsheet">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    <path d="M8 13h2"/>
+                    <path d="M14 13h2"/>
+                    <path d="M8 17h2"/>
+                    <path d="M14 17h2"/>
+                </svg>
+              CSV
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto p-6">
+          <table class="w-full text-sm text-left">
+            <thead>
+              <tr class="border-b">
+                <th class="py-2">Mês</th>
+                <th class="py-2">Total Gasto</th>
+                <th class="py-2">Assinaturas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Janeiro 2024</td><td>R$ 450,00</td><td>8</td></tr>
+              <tr><td>Fevereiro 2024</td><td>R$ 520,00</td><td>9</td></tr>
+              <tr><td>Março 2024</td><td>R$ 380,00</td><td>7</td></tr>
+              <tr><td>Abril 2024</td><td>R$ 620,00</td><td>11</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="bg-white shadow rounded-lg">
+        <div class="flex items-center justify-between px-6 py-4 border-b">
+          <div>
+            <h3 class="text-lg font-semibold">Histórico de Assinaturas</h3>
+            <p class="text-sm text-gray-500">Todas as suas assinaturas</p>
+          </div>
+          <div class="flex space-x-2">
+            <button class="flex items-center border rounded px-3 py-1 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text-icon lucide-file-text">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    <path d="M10 9H8"/>
+                    <path d="M16 13H8"/>
+                    <path d="M16 17H8"/>
+                </svg>
+              PDF
+            </button>
+            <button class="flex items-center border rounded px-3 py-1 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-spreadsheet-icon lucide-file-spreadsheet">
+                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                    <path d="M8 13h2"/>
+                    <path d="M14 13h2"/>
+                    <path d="M8 17h2"/>
+                    <path d="M14 17h2"/>
+                </svg>
+              CSV
+            </button>
+          </div>
+        </div>
+        <div class="overflow-x-auto p-6">
+          <table class="w-full text-sm text-left">
+            <thead>
+              <tr class="border-b">
+                <th class="py-2">Serviço</th>
+                <th class="py-2">Valor</th>
+                <th class="py-2">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Netflix<br><span class="text-xs text-gray-500">Premium</span></td><td>R$ 55,90</td><td><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Ativa</span></td></tr>
+              <tr><td>Spotify<br><span class="text-xs text-gray-500">Individual</span></td><td>R$ 21,90</td><td><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Ativa</span></td></tr>
+              <tr><td>Adobe Creative<br><span class="text-xs text-gray-500">Completo</span></td><td>R$ 239,90</td><td><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Ativa</span></td></tr>
+              <tr><td>Canva Pro<br><span class="text-xs text-gray-500">Anual</span></td><td>R$ 399,90</td><td><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs">Cancelada</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exportar Todos -->
+    <div class="bg-white shadow rounded-lg p-6">
+      <h2 class="text-lg font-semibold mb-1">Exportar Todos os Relatórios</h2>
+      <p class="text-gray-500 mb-4">Baixe todos os seus dados em diferentes formatos</p>
+      <div class="flex flex-wrap gap-4">
+        <button class="bg-blue-600 text-white px-4 py-2 rounded flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download">
+                <path d="M12 15V3"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <path d="m7 10 5 5 5-5"/>
+            </svg>
+          Exportar Relatório Completo (PDF)
+        </button>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download">
+                <path d="M12 15V3"/>
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <path d="m7 10 5 5 5-5"/>
+            </svg>
+          Exportar Dados (CSV)
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
