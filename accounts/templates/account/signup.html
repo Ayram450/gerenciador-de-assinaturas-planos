@@ -1,0 +1,109 @@
+{% extends "account/base_entrance.html" %}
+{% load allauth i18n %}
+{% block head_title %}
+    {% trans "Signup" %}
+{% endblock head_title %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SubscrybeFlow - Cadastro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .helptext {
+        display: none;
+      }
+      ul.errorlist {
+        margin-top: 4px;
+        color: #e53e3e;
+        font-size: 0.875rem;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div class="container mx-auto px-4 py-8">
+      <div class="mb-6">
+        <a href="{% url 'homepage' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+          Voltar ao início
+        </a>
+      </div>
+
+      <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+        <div class="text-center mb-6">
+          <h1 class="text-2xl font-bold">SubscrybeFlow</h1>
+          <p class="text-sm text-gray-600">Crie sua conta</p>
+        </div>
+
+        {% if not SOCIALACCOUNT_ONLY %}
+          {% url 'account_signup' as action_url %}
+          <form method="post" action="{{ action_url }}" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Campo Nome de Usuário -->
+            <div>
+              <label for="id_username" class="block text-sm font-medium">Nome de usuário</label>
+              <input type="text" name="username" id="id_username" placeholder="seu nome de usuário"
+                     value="{{ form.username.value|default_if_none:'' }}"
+                     class="w-full px-4 py-2 border rounded-md" required>
+              {{ form.username.errors }}
+            </div>
+
+            <!-- Campo Email -->
+            <div>
+              <label for="id_email" class="block text-sm font-medium">Email</label>
+              <input type="email" name="email" id="id_email" placeholder="seu@email.com"
+                     value="{{ form.email.value|default_if_none:'' }}"
+                     class="w-full px-4 py-2 border rounded-md" required>
+              {{ form.email.errors }}
+            </div>
+
+            <!-- Campo Senha -->
+            <div>
+              <label for="id_password1" class="block text-sm font-medium">Senha</label>
+              <input type="password" name="password1" id="id_password1" placeholder="sua senha"
+                     class="w-full px-4 py-2 border rounded-md" required>
+              {{ form.password1.errors }}
+            </div>
+
+            <!-- Campo Confirmar Senha -->
+            <div>
+              <label for="id_password2" class="block text-sm font-medium">Confirmar senha</label>
+              <input type="password" name="password2" id="id_password2" placeholder="confirme sua senha"
+                     class="w-full px-4 py-2 border rounded-md" required>
+              {{ form.password2.errors }}
+            </div>
+
+            <!-- Redirecionamento após cadastro -->
+                <input type="hidden" name="next" value="/accounts/profile/" />
+            {{ redirect_field }}
+
+            <!-- Termos -->
+            <div class="flex items-center">
+              <input type="checkbox" id="terms" class="mr-2" required />
+              <label for="terms" class="text-sm">Aceito os termos de uso e política de privacidade</label>
+            </div>
+
+            <!-- Botão -->
+            <button type="submit" class="w-full bg-black text-white py-2 rounded">Criar conta</button>
+          </form>
+        {% endif %}
+
+        <div class="text-center mt-6">
+          <p class="text-sm text-gray-600">Já tem uma conta?</p>
+          <a href="{% url 'account_login' %}" class="text-blue-600 hover:text-blue-800 font-semibold">Acessar conta</a>
+        </div>
+
+        {% if SOCIALACCOUNT_ENABLED %}
+          {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+        {% endif %}
+      </div>
+    </div>
+  </body>
+</html>
+{% endblock content %}
