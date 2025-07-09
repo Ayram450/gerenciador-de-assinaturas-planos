@@ -33,11 +33,12 @@ INSTALLED_APPS = [
     "accounts.apps.AccountsConfig",
     "allauth",
     "allauth.account",
+    "django.contrib.humanize",
 ]
 
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/perfil/'
-ACCOUNT_SIGNUP_REDIRECT_URL = '/perfil/'
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/perfil/"
+ACCOUNT_SIGNUP_REDIRECT_URL = "/perfil/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 MIDDLEWARE = [
