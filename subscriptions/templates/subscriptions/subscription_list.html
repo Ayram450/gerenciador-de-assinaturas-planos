@@ -164,23 +164,39 @@
           <div class="p-4 border rounded flex justify-between items-center">
             <div>
               <p class="font-semibold">{{ subscription.nomeAssi }} - {{ subscription.empresa }}</p>
-              <p class="text-sm text-gray-500">R$ {{ subscription.valorMens }} | Vencimento: {{ subscription.data_venc|date:"d/m" }}</p>
+              <p class="text-sm text-gray-500">
+                R$ {{ subscription.valorMens }} | Vencimento: {{ subscription.data_venc|date:"d/m" }}
+              </p>
               <p class="text-sm text-gray-500">{{ subscription.get_categoria_display }}</p>
             </div>
             <div class="flex items-center space-x-2">
               <span class="text-sm text-green-600 font-medium">Ativa</span>
+
               <button
-                onclick="abrirModal('{{ subscription.id }}', '{{ subscription.nomeAssi }}', '{{ subscription.empresa }}', '{{ subscription.valorMens }}', '{{ subscription.data_venc }}', '{{ subscription.categoria }}'), '{{ subscription.metPagar }}')"
+                onclick="abrirModal(
+                  '{{ subscription.id }}',
+                  '{{ subscription.nomeAssi }}',
+                  '{{ subscription.empresa }}',
+                  '{{ subscription.valorMens }}',
+                  '{{ subscription.data_venc }}',
+                  '{{ subscription.categoria }}',
+                  '{{ subscription.metPagar }}'
+                )"
                 class="bg-blue-500 text-white px-2 py-1 rounded text-sm"
               >
                 Editar
               </button>
-              <button
-                type="button"
-                class="bg-red-500 text-white px-2 py-1 rounded text-sm"
-              >
-                Excluir
-              </button>
+
+              <form method="post" action="{% url 'excluir_assinatura' subscription.id %}">
+                {% csrf_token %}
+                <button
+                  type="submit"
+                  class="bg-red-500 text-white px-2 py-1 rounded text-sm"
+                  onclick="return confirm('Tem certeza que deseja excluir esta assinatura?');"
+                >
+                  Excluir
+                </button>
+              </form>
             </div>
           </div>
           {% empty %}
@@ -188,6 +204,7 @@
           {% endfor %}
         </div>
       </div>
+
 
 
       <!-- Modal de Edição FUNCIONAL -->
@@ -258,36 +275,25 @@
         </div>
       </div>
 
+
       <script>
         function abrirModal(id, nome, empresa, valor, vencimento, categoria, metodo) {
-          // Preenche os campos do modal
-          document.getElementById('edit-id').value = id;
           document.getElementById('edit-nomeAssi').value = nome;
           document.getElementById('edit-empresa').value = empresa;
           document.getElementById('edit-valorMens').value = valor;
-
-          // Ajusta a data para o formato YYYY-MM-DD (esperado pelo input[type="date"])
-          const dataFormatada = new Date(vencimento).toISOString().split('T')[0];
-          document.getElementById('edit-data_venc').value = dataFormatada;
-
-          // Define as opções dos selects
+          document.getElementById('edit-data_venc').value = vencimento;
           document.getElementById('edit-categoria').value = categoria;
           document.getElementById('edit-metPagar').value = metodo;
-
-          // Abre o modal
-          const modal = document.getElementById('modal-editar');
-          modal.classList.remove('hidden');
-          modal.classList.add('flex');
+          document.getElementById('modal-editar').classList.remove('hidden');
+          document.getElementById('modal-editar').classList.add('flex');
         }
 
         function fecharModal() {
-          const modal = document.getElementById('modal-editar');
-          modal.classList.add('hidden');
-          modal.classList.remove('flex');
+          document.getElementById('modal-editar').classList.add('hidden');
+          document.getElementById('modal-editar').classList.remove('flex');
         }
       </script>
-
-      
+     
       <script>
         function irParaCampoNome() {
           const campo = document.getElementById("form-nome");

@@ -3,7 +3,7 @@ from .models import Subscription, RelatorioMensal
 from datetime import datetime, timedelta
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 
@@ -55,6 +55,10 @@ class SubscriptionCreateView(CreateView):
 class SubscriptionUpdateView(UpdateView):
     model = Subscription
     fields = ["nomeAssi", "empresa", "data_venc", "categoria", "metPagar", "valorMens"]
+    success_url = reverse_lazy("assinaturas")
+    
+class SubscriptionDeleteView(DeleteView):
+    model = Subscription
     success_url = reverse_lazy("assinaturas")
     
     
