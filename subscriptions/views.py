@@ -187,5 +187,48 @@ def perfil(request):
         "subscriptions/perfil.html",
     )
 
+def gerar_relatorio_do_mes(mes, ano):
+    assinaturas = Subscription.objects.filter(data_venc__month=mes, data_venc__year=ano)
 
+    total_assinaturas = assinaturas.count()
+    total_valor = assinaturas.aggregate(total=Sum('valorMens'))['total'] or 0
+
+    pagas = assinaturas.filter(status='pago')
+    pendentes = assinaturas.filter(status='pendente')
+    atrasadas = assinaturas.filter(status='atrasado')
+
+    relatorio, created = RelatorioMensal.objects.update_or_create(
+        mes=mes,
+        ano=ano,
+        defaults={
+            'total_assinaturas': total_assinaturas,
+            'total_valor_mensal': total_valor,
+            'assinaturas_pagas': pagas.count(),
+            'valor_pagas': pagas.aggregate(total=Sum('valorMens'))['total'] or 0,
+            'assinaturas_pendentes': pendentes.count(),
+            'valor_pendentes': pendentes.aggregate(total=Sum('valorMens'))['total'] or 0,
+            'assinaturas_atrasadas': atrasadas.count(),
+            'valor_atrasadas': atrasadas.aggregate(total=Sum('valorMens'))['total'] or 0,
+            'proximos_vencimentos': Subscription.objects.filter(data_venc__gt=timezone.now().date()).count()
+        }
+    )
+
+    # Limpa registros anteriores se relatório foi recriado
+    if not created:
+        relatorio.assinaturas.all().delete()
+
+    # Cópia das assinaturas no momento do relatório
+    for sub in assinaturas:
+        AssinaturaRelatorio.objects.create(
+            relatorio=relatorio,
+            nomeAssi=sub.nomeAssi,
+            empresa=sub.empresa,
+            data_venc=sub.data_venc,
+            status=sub.status,
+            categoria=sub.categoria,
+            metPagar=sub.metPagar,
+            valorMens=sub.valorMens
+        )
+
+    return relatorio
 
