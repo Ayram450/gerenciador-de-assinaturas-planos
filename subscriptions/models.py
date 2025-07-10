@@ -29,9 +29,17 @@ class Subscription(models.Model):
         ("comunicacao", "Comunicação"),
         ("outros", "Outros"),
     ]
+    
+    STATUS_PAGAMENTO = [
+            ("pendente", "Pendente"),
+            ("pago", "Pago"),
+            ("atrasado", "Atrasado"),
+        ]
+    
     nomeAssi = models.CharField(max_length=100, null=False, blank=False)
     empresa = models.CharField(max_length=100, null=False, blank=False)
     data_venc = models.DateField(null=False, blank=False)
+    status = models.CharField(max_length=20, choices=STATUS_PAGAMENTO, default="pendente")
     categoria = models.CharField(
         max_length=50,
         choices=CATEGORIA_CHOICES,

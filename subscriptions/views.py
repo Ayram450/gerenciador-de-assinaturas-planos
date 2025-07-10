@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Subscription, RelatorioMensal
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
+from django.db.models import Q
 
 
 
@@ -75,6 +76,37 @@ class SubscriptionDeleteView(DeleteView):
     success_url = reverse_lazy("assinaturas")
     
     
+def pagamentos_view(request):
+    q = request.GET.get("q")  # texto de busca
+    status = request.GET.get("status")  # filtro por status (se você tiver)
+
+    subscriptions = Subscription.objects.all()
+
+    # Filtro por nome do plano ou empresa
+    if q:
+        subscriptions = subscriptions.filter(
+            Q(nomeAssi__icontains=q) | Q(empresa__icontains=q)
+        )
+
+    # Exemplo: filtro por status, se o modelo tiver esse campo
+    if status == "pending":
+        subscriptions = subscriptions.filter(status="pendente")
+    elif status == "completed":
+        subscriptions = subscriptions.filter(status="pago")
+    elif status == "failed":
+        subscriptions = subscriptions.filter(status="atrasado")
+
+    return render(request, "subscriptions/pagamentos.html", {
+        "subscription_list": subscriptions
+    })
+    
+class SubscriptionCompleteView(View): 
+    def get(self, request, pk):
+        subscription = get_object_or_404(Subscription, pk=pk)
+        subscription.finished_at = date.today()
+        subscription.save()
+        return redirect("pagamentos")
+        
 
 def lembretes(request):
     return render(
@@ -89,11 +121,11 @@ def relatorios(request):
     )
 
 
-def pagamentos(request):
-    return render(
-        request,
-        "subscriptions/pagamentos.html",
-    )
+ # def pagamentos(request):
+#    return render(
+ #       request,
+  #      "subscriptions/pagamentos.html",
+   # )
 
 
 @login_required
