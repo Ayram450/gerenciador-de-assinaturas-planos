@@ -29,6 +29,7 @@ class SubscriptionListView(ListView):
         return context
     
     def post(self, request, *args, **kwargs):
+        subscription_id = request.POST.get("id")
         nome = request.POST.get("nomeAssi")
         empresa = request.POST.get("empresa")
         valor = request.POST.get("valorMens")
@@ -36,14 +37,26 @@ class SubscriptionListView(ListView):
         metPagar = request.POST.get("metPagar")
         data_venc = request.POST.get("data_venc")
 
-        Subscription.objects.create(
-            nomeAssi=nome,
-            empresa=empresa,
-            valorMens=valor,
-            categoria=categoria,
-            metPagar=metPagar,
-            data_venc=data_venc
-        )
+        if subscription_id:
+            # Edição
+            subscription = Subscription.objects.get(id=subscription_id)
+            subscription.nomeAssi = nome
+            subscription.empresa = empresa
+            subscription.valorMens = valor
+            subscription.categoria = categoria
+            subscription.metPagar = metPagar
+            subscription.data_venc = data_venc
+            subscription.save()
+        else:
+            # Criação
+            Subscription.objects.create(
+                nomeAssi=nome,
+                empresa=empresa,
+                valorMens=valor,
+                categoria=categoria,
+                metPagar=metPagar,
+                data_venc=data_venc
+            )
 
         return redirect("assinaturas")
 
