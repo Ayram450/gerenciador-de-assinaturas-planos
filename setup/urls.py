@@ -18,7 +18,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path("assinaturas/", SubscriptionListView.as_view(), name="assinaturas"),
-    path("assinaturas/ed<int:pk>/", SubscriptionUpdateView.as_view(), name="editar-assinatura"),
+    path("assinaturas/<int:pk>/", SubscriptionUpdateView.as_view(), name="editar_assinatura"),
     path("lembretes/", lembretes, name="lembretes"),
     path("relatorios/", relatorios, name="relatorios"),
     path("pagamentos/", pagamentos, name="pagamentos"),

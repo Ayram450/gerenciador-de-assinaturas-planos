@@ -56,6 +56,8 @@ class SubscriptionUpdateView(UpdateView):
     model = Subscription
     fields = ["nomeAssi", "empresa", "data_venc", "categoria", "metPagar", "valorMens"]
     success_url = reverse_lazy("assinaturas")
+    
+    
 
 def lembretes(request):
     return render(

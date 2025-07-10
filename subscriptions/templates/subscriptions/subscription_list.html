@@ -170,7 +170,7 @@
             <div class="flex items-center space-x-2">
               <span class="text-sm text-green-600 font-medium">Ativa</span>
               <button
-                onclick="abrirModal('{{ subscription.id }}', '{{ subscription.nomeAssi }}', '{{ subscription.empresa }}', '{{ subscription.valorMens }}', '{{ subscription.data_venc }}', '{{ subscription.categoria }}')"
+                onclick="abrirModal('{{ subscription.id }}', '{{ subscription.nomeAssi }}', '{{ subscription.empresa }}', '{{ subscription.valorMens }}', '{{ subscription.data_venc }}', '{{ subscription.categoria }}'), '{{ subscription.metPagar }}')"
                 class="bg-blue-500 text-white px-2 py-1 rounded text-sm"
               >
                 Editar
@@ -189,54 +189,105 @@
         </div>
       </div>
 
-      <!-- Modal de Edição (só visual) -->
+
+      <!-- Modal de Edição FUNCIONAL -->
       <div id="modal-editar" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
         <div class="bg-white p-6 rounded shadow-lg w-full max-w-md">
           <h2 class="text-xl font-bold mb-4">Editar Assinatura</h2>
-          <form>
+          <form method="post" id="form-editar">
+            {% csrf_token %}
+            <input type="hidden" name="id" id="edit-id" />
+
             <div class="mb-2">
               <label class="block text-sm font-medium">Nome do Plano</label>
-              <input type="text" id="edit-nomeAssi" class="w-full border px-4 py-2 rounded" readonly>
+              <input type="text" id="edit-nomeAssi" name="nomeAssi" class="w-full border px-4 py-2 rounded" required>
             </div>
             <div class="mb-2">
               <label class="block text-sm font-medium">Empresa</label>
-              <input type="text" id="edit-empresa" class="w-full border px-4 py-2 rounded" readonly>
+              <input type="text" id="edit-empresa" name="empresa" class="w-full border px-4 py-2 rounded" required>
             </div>
             <div class="mb-2">
               <label class="block text-sm font-medium">Valor (R$)</label>
-              <input type="text" id="edit-valorMens" class="w-full border px-4 py-2 rounded" readonly>
+              <input type="number" id="edit-valorMens" name="valorMens" step="0.01" class="w-full border px-4 py-2 rounded" required>
             </div>
             <div class="mb-2">
               <label class="block text-sm font-medium">Vencimento</label>
-              <input type="text" id="edit-data_venc" class="w-full border px-4 py-2 rounded" readonly>
+              <input type="date" id="edit-data_venc" name="data_venc" class="w-full border px-4 py-2 rounded" required>
             </div>
-            <div class="mb-4">
+            <div class="mb-2">
               <label class="block text-sm font-medium">Categoria</label>
-              <input type="text" id="edit-categoria" class="w-full border px-4 py-2 rounded" readonly>
+              <select id="edit-categoria" name="categoria" class="w-full border px-4 py-2 rounded" required>
+                <option value="" disabled>Selecione a categoria</option>
+                <option value="entretenimento">Entretenimento</option>
+                <option value="musica">Música</option>
+                <option value="jogos">Jogos</option>
+                <option value="educacao">Educação</option>
+                <option value="produtividade">Produtividade</option>
+                <option value="design">Design / Criativo</option>
+                <option value="financeiro">Financeiro</option>
+                <option value="alimentacao">Alimentação</option>
+                <option value="saude">Saúde</option>
+                <option value="transporte">Transporte</option>
+                <option value="casa">Casa e Serviços</option>
+                <option value="pets">Pets</option>
+                <option value="compras">Compras / Delivery</option>
+                <option value="internet">Internet / Dados</option>
+                <option value="softwares">Softwares / Apps</option>
+                <option value="beleza">Beleza e Estética</option>
+                <option value="bem-estar">Bem-estar</option>
+                <option value="comunicacao">Comunicação</option>
+                <option value="outros">Outros</option>
+              </select>
             </div>
+            <div class="mb-2">
+              <label class="block text-sm font-medium">Método de Pagamento</label>
+              <select id="edit-metPagar" name="metPagar" class="w-full border px-4 py-2 rounded" required>
+                <option value="" disabled>Método de Pagamento</option>
+                <option value="debito">Débito</option>
+                <option value="credito">Crédito</option>
+                <option value="boleto">Boleto</option>
+                <option value="pix">Pix</option>
+              </select>
+            </div>
+
             <div class="flex justify-end space-x-2">
-              <button type="button" onclick="fecharModal()" class="px-4 py-2 bg-gray-300 rounded">Fechar</button>
+              <button type="button" onclick="fecharModal()" class="px-4 py-2 bg-gray-300 rounded">Cancelar</button>
+              <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded">Salvar</button>
             </div>
           </form>
         </div>
       </div>
 
       <script>
-        function abrirModal(id, nome, empresa, valor, vencimento, categoria) {
+        function abrirModal(id, nome, empresa, valor, vencimento, categoria, metodo) {
+          // Preenche os campos do modal
+          document.getElementById('edit-id').value = id;
           document.getElementById('edit-nomeAssi').value = nome;
           document.getElementById('edit-empresa').value = empresa;
           document.getElementById('edit-valorMens').value = valor;
-          document.getElementById('edit-data_venc').value = vencimento;
+
+          // Ajusta a data para o formato YYYY-MM-DD (esperado pelo input[type="date"])
+          const dataFormatada = new Date(vencimento).toISOString().split('T')[0];
+          document.getElementById('edit-data_venc').value = dataFormatada;
+
+          // Define as opções dos selects
           document.getElementById('edit-categoria').value = categoria;
-          document.getElementById('modal-editar').classList.remove('hidden');
-          document.getElementById('modal-editar').classList.add('flex');
+          document.getElementById('edit-metPagar').value = metodo;
+
+          // Abre o modal
+          const modal = document.getElementById('modal-editar');
+          modal.classList.remove('hidden');
+          modal.classList.add('flex');
         }
 
         function fecharModal() {
-          document.getElementById('modal-editar').classList.add('hidden');
-          document.getElementById('modal-editar').classList.remove('flex');
+          const modal = document.getElementById('modal-editar');
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
         }
       </script>
+
+      
       <script>
         function irParaCampoNome() {
           const campo = document.getElementById("form-nome");
