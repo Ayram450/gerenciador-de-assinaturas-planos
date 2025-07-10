@@ -1,12 +1,14 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Subscription, RelatorioMensal
 from datetime import datetime, timedelta, date
+from django.utils import timezone
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.db.models import Q
+from dateutil.relativedelta import relativedelta
 
 
 
@@ -81,6 +83,9 @@ def pagamentos_view(request):
     status = request.GET.get("status")  # filtro por status (se você tiver)
 
     subscriptions = Subscription.objects.all()
+    
+    for sub in subscriptions:
+        sub.verificar_status()
 
     # Filtro por nome do plano ou empresa
     if q:
@@ -99,13 +104,60 @@ def pagamentos_view(request):
     return render(request, "subscriptions/pagamentos.html", {
         "subscription_list": subscriptions
     })
+ 
+# def concluir_pagamento(request, pk):
+#     subscription = get_object_or_404(Subscription, pk=pk)
+
+#     if subscription.status == 'pendente' or subscription.status == 'atrasado':
+#         # Atualiza status
+#         subscription.status = 'pago'
+#         subscription.save()
+
+#         # Gera nova mensalidade para o próximo mês
+#         nova_data = subscription.data_venc + timedelta(days=30)
+#         Subscription.objects.create(
+#             nomeAssi=subscription.nomeAssi,
+#             empresa=subscription.empresa,
+#             valorMens=subscription.valorMens,
+#             data_venc=nova_data,
+#             categoria=subscription.categoria,
+#             metPagar=subscription.metPagar,
+#             status='pendente'
+#         )
+
+#     return redirect('pagamentos')
     
 class SubscriptionCompleteView(View): 
-    def get(self, request, pk):
+    def post(self, request, pk):
         subscription = get_object_or_404(Subscription, pk=pk)
-        subscription.finished_at = date.today()
-        subscription.save()
-        return redirect("pagamentos")
+
+        if subscription.status in ['pendente', 'atrasado']:
+            subscription.status = 'pago'
+            subscription.save()
+
+            # Define a nova data de vencimento (mês seguinte)
+            nova_data = subscription.data_venc + relativedelta(months=1)
+
+            # Verifica se já existe uma assinatura futura com essa data
+            existe_futura = Subscription.objects.filter(
+                nomeAssi=subscription.nomeAssi,
+                empresa=subscription.empresa,
+                data_venc=nova_data
+            ).exists()
+
+            # Só cria se ainda não existir
+            if not existe_futura:
+                Subscription.objects.create(
+                    nomeAssi=subscription.nomeAssi,
+                    empresa=subscription.empresa,
+                    valorMens=subscription.valorMens,
+                    data_venc=nova_data,
+                    categoria=subscription.categoria,
+                    metPagar=subscription.metPagar,
+                    status='pendente'
+                )
+
+        return redirect('pagamentos')
         
 
 def lembretes(request):

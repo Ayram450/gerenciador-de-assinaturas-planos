@@ -75,23 +75,27 @@
 
 
     <!-- Lista de Pagamentos -->
-      <div class="bg-white shadow rounded-lg p-4">
-        <h3 class="text-lg font-semibold mb-4">Histórico de Pagamentos</h3>
-        <div class="space-y-4">
-          {% for subscription in subscription_list %}
-          <div class="p-4 border rounded flex justify-between items-center">
-            <div>
-              <p class="font-semibold">{{ subscription.nomeAssi }} - {{ subscription.empresa }}</p>
-              <p class="text-sm text-gray-500">
-                R$ {{ subscription.valorMens }} | Vencimento: {{ subscription.data_venc|date:"d/m/Y" }}
-              </p>
-              <p class="text-sm text-gray-500">
-                {{ subscription.get_categoria_display }} | {{ subscription.get_metPagar_display }}
-              </p>
-            </div>
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-orange-600 font-medium">Pendente</span>
+    <div class="bg-white shadow rounded-lg p-4">
+      <h3 class="text-lg font-semibold mb-4">Histórico de Pagamentos</h3>
+      <div class="space-y-4">
+        {% for subscription in subscription_list %}
+        <div class="p-4 border rounded flex justify-between items-center">
+          <div>
+            <p class="font-semibold">{{ subscription.nomeAssi }} - {{ subscription.empresa }}</p>
+            <p class="text-sm text-gray-500">
+              R$ {{ subscription.valorMens }} | Vencimento: {{ subscription.data_venc|date:"d/m/Y" }}
+            </p>
+            <p class="text-sm text-gray-500">
+              {{ subscription.get_categoria_display }} | {{ subscription.get_metPagar_display }}
+            </p>
+          </div>
 
+          <div class="flex items-center space-x-2">
+            <span class="text-sm font-medium {% if subscription.status == 'pendente' %}text-orange-600{% elif subscription.status == 'pago' %}text-green-600{% else %}text-red-600{% endif %}">
+              {{ subscription.get_status_display }}
+            </span>
+
+            {% if subscription.status != 'pago' %}
             <form method="post" action="{% url 'subscription_complete' pk=subscription.pk %}">
               {% csrf_token %}
               <button
@@ -100,15 +104,16 @@
               >
                 Concluir
               </button>
-            </form>              
-
-            </div>
+            </form>
+            {% endif %}
           </div>
-          {% empty %}
-          <p class="text-gray-500">Nenhuma assinatura cadastrada.</p>
-          {% endfor %}
         </div>
+        {% empty %}
+        <p class="text-gray-500">Nenhuma assinatura cadastrada.</p>
+        {% endfor %}
       </div>
+    </div>
+
 
 
   </div>

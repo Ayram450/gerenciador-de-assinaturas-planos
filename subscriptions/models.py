@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
 
 
 class Subscription(models.Model):
@@ -57,6 +59,10 @@ class Subscription(models.Model):
     valorMens = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, blank=False
     )
+    def verificar_status(self):
+            if self.status == 'pendente' and self.data_venc < timezone.now().date():
+                self.status = 'atrasado'
+                self.save()
 
 
 class RelatorioMensal(models.Model):
