@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Subscription, RelatorioMensal
+from .models import Subscription, RelatorioMensal, AssinaturaRelatorio
 from datetime import datetime, timedelta, date
 from django.utils import timezone
 from django.db.models import Sum

@@ -66,11 +66,22 @@ class Subscription(models.Model):
 
 
 class RelatorioMensal(models.Model):
-    mes = models.IntegerField()  # 1 a 12
+    mes = models.IntegerField()
     ano = models.IntegerField()
     total_assinaturas = models.IntegerField()
     total_valor_mensal = models.DecimalField(max_digits=10, decimal_places=2)
-    proximos_vencimentos = models.IntegerField()
+
+    assinaturas_pagas = models.IntegerField(default=0)
+    valor_pagas = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    assinaturas_pendentes = models.IntegerField(default=0)
+    valor_pendentes = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    assinaturas_atrasadas = models.IntegerField(default=0)
+    valor_atrasadas = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    proximos_vencimentos = models.IntegerField(default=0)
+
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -79,3 +90,44 @@ class RelatorioMensal(models.Model):
 
     def __str__(self):
         return f"Relatório {self.mes:02d}/{self.ano}"
+    
+    
+class AssinaturaRelatorio(models.Model):
+    relatorio = models.ForeignKey(RelatorioMensal, on_delete=models.CASCADE, related_name='assinaturas')
+
+    nomeAssi = models.CharField(max_length=100)
+    empresa = models.CharField(max_length=100)
+    data_venc = models.DateField()
+    status = models.CharField(max_length=20, choices=[
+        ("pendente", "Pendente"),
+        ("pago", "Pago"),
+        ("atrasado", "Atrasado"),
+    ])
+    categoria = models.CharField(max_length=50, choices=[
+        ("entretenimento", "Entretenimento"),
+        ("musica", "Música"),
+        ("jogos", "Jogos"),
+        ("educacao", "Educação"),
+        ("produtividade", "Produtividade"),
+        ("design", "Design / Criativo"),
+        ("financeiro", "Financeiro"),
+        ("alimentacao", "Alimentação"),
+        ("saude", "Saúde"),
+        ("transporte", "Transporte"),
+        ("casa", "Casa e Serviços"),
+        ("pets", "Pets"),
+        ("compras", "Compras / Delivery"),
+        ("internet", "Internet / Dados"),
+        ("softwares", "Softwares / Apps"),
+        ("beleza", "Beleza e Estética"),
+        ("bem-estar", "Bem-estar"),
+        ("comunicacao", "Comunicação"),
+        ("outros", "Outros"),
+    ])
+    metPagar = models.CharField(max_length=50, choices=[
+        ("debito", "Débito"),
+        ("credito", "Crédito"),
+        ("boleto", "Boleto"),
+        ("pix", "Pix"),
+    ])
+    valorMens = models.DecimalField(max_digits=10, decimal_places=2)
