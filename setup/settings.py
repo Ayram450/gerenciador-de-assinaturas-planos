@@ -37,8 +37,8 @@ INSTALLED_APPS = [
 ]
 
 LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/redirecionar/"
 LOGIN_REDIRECT_URL = "/perfil/"
+LOGIN_REDIRECT_URL = "/redirecionar/"
 ACCOUNT_SIGNUP_REDIRECT_URL = "/perfil/"
 ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 

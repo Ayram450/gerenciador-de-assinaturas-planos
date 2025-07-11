@@ -13,14 +13,13 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 @staff_member_required
 def administrador_view(request):
-    return render(request, "accounts/admin_dash.html")  # ou "account/administrador.html"
+    return render(request, "accounts/admin_dash.html")  
 
 @login_required
 def redirecionar_apos_login(request):
     if request.user.is_superuser:
         return redirect('admin_dash')
-    else:
-        return redirect('perfil')
+    return redirect('perfil')
 
 
 

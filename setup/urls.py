@@ -34,8 +34,9 @@ urlpatterns = [
     path("recursos/", recursos, name="recursos"),
     path("sobre/", sobre, name="sobre"),
     path("perfil/", perfil, name="perfil"),
-    path('admin-dashboard/', administrador_view, name='admin_dash'),
     path('redirecionar/', redirecionar_apos_login, name='redirecionar_apos_login'),
+    path('admin-dashboard/', administrador_view, name='admin_dash'),
+   
   
     
     
