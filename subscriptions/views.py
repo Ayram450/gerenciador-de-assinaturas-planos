@@ -16,6 +16,10 @@ class SubscriptionListView(ListView):
     model = Subscription
     template_name = "subscriptions/subscription_list.html"
     
+    def get_queryset(self):
+        # Exclui assinaturas que já foram pagas
+        return Subscription.objects.exclude(status='pago')
+    
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         
@@ -30,7 +34,7 @@ class SubscriptionListView(ListView):
         ).count()
 
         return context
-    
+
     def post(self, request, *args, **kwargs):
         subscription_id = request.POST.get("id")
         nome = request.POST.get("nomeAssi")
