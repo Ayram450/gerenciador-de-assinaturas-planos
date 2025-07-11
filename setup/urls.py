@@ -15,6 +15,7 @@ from base.views import recursos
 from base.views import sobre
 from accounts.views import redirecionar_apos_login, administrador_view
 from accounts.views import ExcluirUsuarioView
+from accounts.views import DadosUsuarioView
 
 
 
@@ -38,6 +39,7 @@ urlpatterns = [
     path('redirecionar/', redirecionar_apos_login, name='redirecionar_apos_login'),
     path('admin-dashboard/', administrador_view, name='admin_dash'),
     path("excluir-usuario/<int:user_id>/", ExcluirUsuarioView.as_view(), name="excluir_usuario"),
+    path("dados-usuarios/<int:pk>/", DadosUsuarioView.as_view(), name="dados_usuario"),
    
   
     

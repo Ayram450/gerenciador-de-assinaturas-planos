@@ -14,6 +14,8 @@ from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import get_user_model
 from django.db.models import Count
+from django.views.generic.detail import DetailView
+
 
 User = get_user_model()
 
@@ -52,7 +54,6 @@ def administrador_view(request):
         .values("id", "username", "email", "date_joined", "qtd_assinaturas")
     )
 
-
     return render(
         request,
         "accounts/admin_dash.html",
@@ -84,3 +85,16 @@ class ExcluirUsuarioView(View):
 
         usuario.delete()
         return redirect("admin_dash")
+    
+@method_decorator(staff_member_required, name='dispatch')
+class DadosUsuarioView(DetailView):
+    model = User
+    template_name = "accounts/dados_usuario.html"
+    context_object_name = "usuario"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        usuario = self.get_object()
+        context["assinaturas"] = Subscription.objects.filter(user=usuario)
+        return context
+
