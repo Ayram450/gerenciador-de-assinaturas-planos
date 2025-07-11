@@ -13,6 +13,7 @@ from subscriptions.views import perfil
 from base.views import homepage
 from base.views import recursos
 from base.views import sobre
+from accounts.views import redirecionar_apos_login, administrador_view
 
 
 
@@ -33,6 +34,9 @@ urlpatterns = [
     path("recursos/", recursos, name="recursos"),
     path("sobre/", sobre, name="sobre"),
     path("perfil/", perfil, name="perfil"),
+    path('admin-dashboard/', administrador_view, name='admin_dash'),
+    path('redirecionar/', redirecionar_apos_login, name='redirecionar_apos_login'),
+  
     
     
 ]

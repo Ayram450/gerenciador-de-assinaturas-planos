@@ -1,9 +1,11 @@
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.auth.models import User
 
 
 class Subscription(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     METODO_PAGAMENTO_CHOICES = [
         ("debito", "Débito"),
         ("credito", "Crédito"),

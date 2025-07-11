@@ -9,7 +9,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
-
+from django.contrib.auth.models import User
 
 
 class SubscriptionListView(ListView):
@@ -18,7 +18,7 @@ class SubscriptionListView(ListView):
     
     def get_queryset(self):
         # Exclui assinaturas que já foram pagas
-        return Subscription.objects.exclude(status='pago')
+        return Subscription.objects.filter(user=self.request.user).exclude(status='pago')
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -46,7 +46,7 @@ class SubscriptionListView(ListView):
 
         if subscription_id:
             # Edição
-            subscription = Subscription.objects.get(id=subscription_id)
+            subscription = Subscription.objects.get(id=subscription_id, user=request.user)
             subscription.nomeAssi = nome
             subscription.empresa = empresa
             subscription.valorMens = valor
@@ -57,6 +57,7 @@ class SubscriptionListView(ListView):
         else:
             # Criação
             Subscription.objects.create(
+                user=request.user,
                 nomeAssi=nome,
                 empresa=empresa,
                 valorMens=valor,
@@ -77,9 +78,17 @@ class SubscriptionUpdateView(UpdateView):
     fields = ["nomeAssi", "empresa", "data_venc", "categoria", "metPagar", "valorMens"]
     success_url = reverse_lazy("assinaturas")
     
+    def get_queryset(self):
+        # Garante que só veja/edite suas próprias assinaturas
+        return Subscription.objects.filter(user=self.request.user)
+    
 class SubscriptionDeleteView(DeleteView):
     model = Subscription
     success_url = reverse_lazy("assinaturas")
+    
+    def get_queryset(self):
+        # Garante que só exclua suas próprias assinaturas
+        return Subscription.objects.filter(user=self.request.user)
     
     
 def pagamentos_view(request):
@@ -87,7 +96,7 @@ def pagamentos_view(request):
     status = request.GET.get("status")  # filtro por status
 
     # Busca todas as assinaturas
-    subscriptions = Subscription.objects.all()
+    subscriptions = Subscription.objects.filter(user=request.user)
 
     # Atualiza o status atrasado automaticamente
     for sub in subscriptions:
@@ -110,7 +119,7 @@ def pagamentos_view(request):
         subscriptions = subscriptions.filter(status="atrasado")
 
     # Estatísticas (independentes dos filtros aplicados)
-    all_subs = Subscription.objects.all()
+    all_subs = Subscription.objects.filter(user=request.user)
     pagos = all_subs.filter(status='pago').count()
     pendentes = all_subs.filter(status='pendente').count()
     atrasados = all_subs.filter(status='atrasado').count()
@@ -129,33 +138,12 @@ def pagamentos_view(request):
         "atrasados": atrasados,
         "total_pago_mes": total_pago_mes,
     })
- 
-# def concluir_pagamento(request, pk):
-#     subscription = get_object_or_404(Subscription, pk=pk)
 
-#     if subscription.status == 'pendente' or subscription.status == 'atrasado':
-#         # Atualiza status
-#         subscription.status = 'pago'
-#         subscription.save()
-
-#         # Gera nova mensalidade para o próximo mês
-#         nova_data = subscription.data_venc + timedelta(days=30)
-#         Subscription.objects.create(
-#             nomeAssi=subscription.nomeAssi,
-#             empresa=subscription.empresa,
-#             valorMens=subscription.valorMens,
-#             data_venc=nova_data,
-#             categoria=subscription.categoria,
-#             metPagar=subscription.metPagar,
-#             status='pendente'
-#         )
-
-#     return redirect('pagamentos')
     
 class SubscriptionCompleteView(View): 
     def post(self, request, pk):
-        subscription = get_object_or_404(Subscription, pk=pk)
-
+        subscription = get_object_or_404(Subscription, pk=pk, user=request.user)
+        
         if subscription.status in ['pendente', 'atrasado']:
             subscription.status = 'pago'
             subscription.save()
@@ -173,6 +161,7 @@ class SubscriptionCompleteView(View):
             # Só cria se ainda não existir
             if not existe_futura:
                 Subscription.objects.create(
+                    user=request.user, 
                     nomeAssi=subscription.nomeAssi,
                     empresa=subscription.empresa,
                     valorMens=subscription.valorMens,
@@ -198,13 +187,6 @@ def relatorios(request):
     )
 
 
- # def pagamentos(request):
-#    return render(
- #       request,
-  #      "subscriptions/pagamentos.html",
-   # )
-
-
 @login_required
 def perfil(request):
     return render(
@@ -212,8 +194,9 @@ def perfil(request):
         "subscriptions/perfil.html",
     )
 
+
 def gerar_relatorio_do_mes(mes, ano):
-    assinaturas = Subscription.objects.filter(data_venc__month=mes, data_venc__year=ano)
+    assinaturas = Subscription.objects.filter(data_venc__month=mes, data_venc__year=ano, user=request.user)
 
     total_assinaturas = assinaturas.count()
     total_valor = assinaturas.aggregate(total=Sum('valorMens'))['total'] or 0
