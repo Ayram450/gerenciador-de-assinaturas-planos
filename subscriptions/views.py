@@ -195,7 +195,7 @@ def perfil(request):
     )
 
 
-def gerar_relatorio_do_mes(mes, ano):
+def gerar_relatorio_do_mes(mes, ano, request):
     assinaturas = Subscription.objects.filter(data_venc__month=mes, data_venc__year=ano, user=request.user)
 
     total_assinaturas = assinaturas.count()
