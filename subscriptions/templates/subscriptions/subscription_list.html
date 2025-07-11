@@ -177,8 +177,8 @@
                   '{{ subscription.id }}',
                   '{{ subscription.nomeAssi }}',
                   '{{ subscription.empresa }}',
-                  '{{ subscription.valorMens }}',
-                  '{{ subscription.data_venc }}',
+                  '{{ subscription.valorMens|floatformat:"2" }}',
+                  '{{ subscription.data_venc|date:"Y-m-d" }}',
                   '{{ subscription.categoria }}',
                   '{{ subscription.metPagar }}'
                 )"
@@ -204,8 +204,6 @@
           {% endfor %}
         </div>
       </div>
-
-
 
       <!-- Modal de Edição FUNCIONAL -->
       <div id="modal-editar" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
@@ -278,10 +276,11 @@
 
       <script>
         function abrirModal(id, nome, empresa, valor, vencimento, categoria, metodo) {
+          const valorConvertido = parseFloat(valor.replace(',', '.'));
           document.getElementById('edit-id').value = id;
           document.getElementById('edit-nomeAssi').value = nome;
           document.getElementById('edit-empresa').value = empresa;
-          document.getElementById('edit-valorMens').value = valor;
+          document.getElementById('edit-valorMens').value = valorConvertido;
           document.getElementById('edit-data_venc').value = vencimento;
           document.getElementById('edit-categoria').value = categoria;
           document.getElementById('edit-metPagar').value = metodo;
