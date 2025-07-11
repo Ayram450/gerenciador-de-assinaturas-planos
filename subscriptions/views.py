@@ -80,20 +80,24 @@ class SubscriptionDeleteView(DeleteView):
     
 def pagamentos_view(request):
     q = request.GET.get("q")  # texto de busca
-    status = request.GET.get("status")  # filtro por status (se você tiver)
+    status = request.GET.get("status")  # filtro por status
 
+    # Busca todas as assinaturas
     subscriptions = Subscription.objects.all()
-    
-    for sub in subscriptions:
-        sub.verificar_status()
 
-    # Filtro por nome do plano ou empresa
+    # Atualiza o status atrasado automaticamente
+    for sub in subscriptions:
+        if sub.status == 'pendente' and sub.data_venc < timezone.now().date():
+            sub.status = 'atrasado'
+            sub.save()
+
+    # Aplica filtros de texto
     if q:
         subscriptions = subscriptions.filter(
             Q(nomeAssi__icontains=q) | Q(empresa__icontains=q)
         )
 
-    # Exemplo: filtro por status, se o modelo tiver esse campo
+    # Filtro por status (se fornecido)
     if status == "pending":
         subscriptions = subscriptions.filter(status="pendente")
     elif status == "completed":
@@ -101,8 +105,25 @@ def pagamentos_view(request):
     elif status == "failed":
         subscriptions = subscriptions.filter(status="atrasado")
 
+    # Estatísticas (independentes dos filtros aplicados)
+    all_subs = Subscription.objects.all()
+    pagos = all_subs.filter(status='pago').count()
+    pendentes = all_subs.filter(status='pendente').count()
+    atrasados = all_subs.filter(status='atrasado').count()
+
+    hoje = timezone.now().date()
+    total_pago_mes = all_subs.filter(
+        status='pago',
+        data_venc__year=hoje.year,
+        data_venc__month=hoje.month
+    ).aggregate(total=Sum('valorMens'))['total'] or 0
+
     return render(request, "subscriptions/pagamentos.html", {
-        "subscription_list": subscriptions
+        "subscription_list": subscriptions,
+        "pagos": pagos,
+        "pendentes": pendentes,
+        "atrasados": atrasados,
+        "total_pago_mes": total_pago_mes,
     })
  
 # def concluir_pagamento(request, pk):

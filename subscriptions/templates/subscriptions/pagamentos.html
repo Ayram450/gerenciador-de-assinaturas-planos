@@ -28,20 +28,20 @@
     <!-- Estatísticas -->
     <div class="grid md:grid-cols-4 gap-6 mb-8">
       <div class="bg-white p-4 shadow rounded-lg">
-        <p class="text-sm text-gray-600">Total de Pagamentos</p>
-        <div class="text-2xl font-bold mt-2">--</div>
+        <p class="text-sm text-gray-600">Pagamentos Pagos</p>
+        <div class="text-2xl font-bold text-green-600 mt-2">{{ pagos }}</div>
       </div>
       <div class="bg-white p-4 shadow rounded-lg">
         <p class="text-sm text-gray-600">Pagamentos Pendentes</p>
-        <div class="text-2xl font-bold text-yellow-600 mt-2">--</div>
+        <div class="text-2xl font-bold text-yellow-600 mt-2">{{ pendentes }}</div>
       </div>
       <div class="bg-white p-4 shadow rounded-lg">
         <p class="text-sm text-gray-600">Total Pago este Mês</p>
-        <div class="text-2xl font-bold text-green-600 mt-2">R$ --</div>
+        <div class="text-2xl font-bold text-lime-600 mt-2">R$ {{ total_pago_mes|floatformat:2 }}</div>
       </div>
       <div class="bg-white p-4 shadow rounded-lg">
-        <p class="text-sm text-gray-600">Pagamentos Falharam</p>
-        <div class="text-2xl font-bold text-red-600 mt-2">--</div>
+        <p class="text-sm text-gray-600">Pagamentos Atrasados</p>
+        <div class="text-2xl font-bold text-red-600 mt-2">{{ atrasados }}</div>
       </div>
     </div>
 
