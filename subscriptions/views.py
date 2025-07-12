@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from subscriptions.notifications.email_gmail import send_gmail
 from .models import Subscription, RelatorioMensal, AssinaturaRelatorio
 from datetime import datetime, timedelta, date
 from django.utils import timezone
@@ -58,7 +59,7 @@ class SubscriptionListView(ListView):
             subscription.save()
         else:
             # Criação
-            Subscription.objects.create(
+            nova = Subscription.objects.create(
                 user=request.user,
                 nomeAssi=nome,
                 empresa=empresa,
@@ -66,6 +67,29 @@ class SubscriptionListView(ListView):
                 categoria=categoria,
                 metPagar=metPagar,
                 data_venc=data_venc
+            )
+            
+            #  Envia o e-mail informando que o lembrete será enviado
+            send_gmail(
+                to_email=request.user.email,
+                subject="Assinatura Criada com Sucesso",
+                message_text=f"""
+            Olá, {request.user.username}!
+
+            Sua nova assinatura foi cadastrada com sucesso no SubscFlow.
+
+            🔔 Detalhes da Assinatura:
+            • Nome: {nome}
+            • Empresa: {empresa}
+            • Valor Mensal: R$ {valor}
+            • Categoria: {categoria}
+            • Método de Pagamento: {metPagar}
+            • Data de Vencimento: {data_venc}
+
+            Você receberá um lembrete por e-mail 5 dias antes da data de vencimento.
+
+            Obrigado por usar o SubscFlow!
+            """
             )
 
         return redirect("assinaturas")
