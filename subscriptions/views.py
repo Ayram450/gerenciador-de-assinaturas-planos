@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Subscription, RelatorioMensal, AssinaturaRelatorio
 from datetime import datetime, timedelta, date
 from django.utils import timezone
-from django.db.models import Sum
+from django.db.models import Sum, Min, Max
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
@@ -129,8 +129,8 @@ def pagamentos_view(request):
     hoje = timezone.now().date()
     total_pago_mes = all_subs.filter(
         status='pago',
-        data_venc__year=hoje.year,
-        data_venc__month=hoje.month
+        data_pagamento__year=hoje.year,
+        data_pagamento__month=hoje.month
     ).aggregate(total=Sum('valorMens'))['total'] or 0
 
     return render(request, "subscriptions/pagamentos.html", {
@@ -148,8 +148,10 @@ class SubscriptionCompleteView(View):
         
         if subscription.status in ['pendente', 'atrasado']:
             subscription.status = 'pago'
+            if not subscription.data_pagamento:
+                subscription.data_pagamento = timezone.now().date()
             subscription.save()
-
+            
             # Define a nova data de vencimento (mês seguinte)
             nova_data = subscription.data_venc + relativedelta(months=1)
 
@@ -175,12 +177,39 @@ class SubscriptionCompleteView(View):
 
         return redirect('pagamentos')
         
-
+@login_required
 def lembretes(request):
-    return render(
-        request,
-        "subscriptions/lembretes.html",
-    )
+    hoje = timezone.now().date()
+    user = request.user
+
+    # Filtra apenas assinaturas ativas (pendentes ou atrasadas)
+    assinaturas_ativas = Subscription.objects.filter(user=user, status__in=['pendente', 'atrasado'])
+
+    # Adiciona dinamicamente o campo "dias_restantes" a cada assinatura
+    for sub in assinaturas_ativas:
+            sub.dias_restantes = (sub.data_venc - hoje).days
+
+    # 1. Lembretes Ativos
+    total_ativos = assinaturas_ativas.count()
+
+    # 2. Vencimento Atrasado: data mais antiga com status atrasado
+    vencimento_atrasado = assinaturas_ativas.filter(status='atrasado').order_by('data_venc').first()
+    data_atrasada = vencimento_atrasado.data_venc if vencimento_atrasado else None
+
+    # 3. Vencimento Próximo: data mais próxima com status pendente
+    vencimento_proximo = assinaturas_ativas.filter(status='pendente', data_venc__gte=hoje).order_by('data_venc').first()
+    data_proxima = vencimento_proximo.data_venc if vencimento_proximo else None
+
+    # 4. Total a Pagar: valor da assinatura mais próxima com status pendente
+    valor_a_pagar = vencimento_proximo.valorMens if vencimento_proximo else 0
+
+    return render(request, "subscriptions/lembretes.html", {
+        "total_ativos": total_ativos,
+        "data_atrasada": data_atrasada,
+        "data_proxima": data_proxima,
+        "valor_a_pagar": valor_a_pagar,
+        "subscription_list": assinaturas_ativas  # Adiciona a lista para exibir no HTML
+    })
 
 def relatorios(request):
     return render(

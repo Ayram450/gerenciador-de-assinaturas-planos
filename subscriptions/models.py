@@ -69,6 +69,7 @@ class Subscription(models.Model):
     valorMens = models.DecimalField(
         max_digits=10, decimal_places=2, null=False, blank=False
     )
+    data_pagamento = models.DateField(null=True, blank=True)
     def verificar_status(self):
             if self.status == 'pendente' and self.data_venc < timezone.now().date():
                 self.status = 'atrasado'
