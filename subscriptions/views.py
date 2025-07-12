@@ -10,6 +10,8 @@ from django.shortcuts import redirect
 from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
+from django import forms
+from .models import Profile
 
 
 class SubscriptionListView(ListView):
@@ -184,14 +186,35 @@ def relatorios(request):
     return render(
         request,
         "subscriptions/relatorios.html",
-    )
-
+    ) 
 
 @login_required
 def perfil(request):
     user = request.user
-    return render(request, "subscriptions/perfil.html", {"user": user})
+    perfil, _ = Profile.objects.get_or_create(user=user)
 
+    class ProfileForm(forms.ModelForm):
+        class Meta:
+            model = Profile
+            fields = ['telefone', 'data_nascimento']
+            widgets = {
+                'telefone': forms.TextInput(attrs={'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}),
+                'data_nascimento': forms.DateInput(attrs={'type': 'date', 'class': 'w-full px-3 py-2 border border-gray-300 rounded-md'}, format='%Y-%m-%d'),
+                
+            }
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, instance=perfil)
+        if form.is_valid():
+            form.save()
+            return redirect('perfil')
+    else:
+        form = ProfileForm(instance=perfil)
+
+    return render(request, "subscriptions/perfil.html", {
+        "user": user,
+        "form": form
+    })
 
 def gerar_relatorio_do_mes(mes, ano, request):
     assinaturas = Subscription.objects.filter(data_venc__month=mes, data_venc__year=ano, user=request.user)
