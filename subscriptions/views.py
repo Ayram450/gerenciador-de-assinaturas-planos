@@ -189,10 +189,8 @@ def relatorios(request):
 
 @login_required
 def perfil(request):
-    return render(
-        request,
-        "subscriptions/perfil.html",
-    )
+    user = request.user
+    return render(request, "subscriptions/perfil.html", {"user": user})
 
 
 def gerar_relatorio_do_mes(mes, ano, request):
