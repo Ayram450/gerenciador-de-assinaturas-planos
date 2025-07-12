@@ -1,19 +1,23 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from subscriptions.notifications.email_gmail import send_gmail
 from django.template.loader import render_to_string
-from .models import Subscription, RelatorioMensal, AssinaturaRelatorio
+from .models import Subscription, RelatorioMensal, Profile, AssinaturaRelatorio
 from datetime import datetime, timedelta, date
 from django.utils import timezone
-from django.db.models import Sum, Min, Max
+from django.db.models import Sum, Q, Min, Max
 from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
 from django.urls import reverse_lazy
-from django.shortcuts import redirect
-from django.db.models import Q
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django import forms
-from .models import Profile
+
+
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+
+
 
 
 class SubscriptionListView(ListView):
@@ -356,3 +360,32 @@ def gerar_relatorio_do_mes(mes, ano, request):
         )
 
     return relatorio
+
+
+@login_required
+def exportar_relatorio_pdf(request):
+    hoje = datetime.now()
+    gerar_relatorio_do_mes(hoje.month, hoje.year, request)
+    assinaturas = Subscription.objects.filter(user=request.user)
+    relatorios_mensais = RelatorioMensal.objects.all()
+
+    template_path = 'subscriptions/pdf_template.html'
+    context = {
+        'usuario': request.user,
+        'assinaturas': assinaturas,
+        'relatorios': relatorios_mensais,
+        'data_hoje': datetime.now()
+    }
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="relatorio_subscricoes.pdf"'
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+
+    if pisa_status.err:
+        return HttpResponse('Erro ao gerar o PDF', status=500)
+    return response
+

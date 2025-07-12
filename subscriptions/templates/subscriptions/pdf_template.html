@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; }
+    h2 { margin-top: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #444; padding: 5px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h1>Relatório de Assinaturas - {{ usuario.username }}</h1>
+  <p>Data: {{ data_hoje|date:"d/m/Y H:i" }}</p>
+
+  <h2>Assinaturas Atuais</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Empresa</th>
+        <th>Valor</th>
+        <th>Vencimento</th>
+        <th>Status</th>
+        <th>Categoria</th>
+        <th>Método</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for assi in assinaturas %}
+        <tr>
+          <td>{{ assi.nomeAssi }}</td>
+          <td>{{ assi.empresa }}</td>
+          <td>R$ {{ assi.valorMens }}</td>
+          <td>{{ assi.data_venc|date:"d/m/Y" }}</td>
+          <td>{{ assi.get_status_display }}</td>
+          <td>{{ assi.get_categoria_display }}</td>
+          <td>{{ assi.get_metPagar_display }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="7">Nenhuma assinatura cadastrada.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2>Relatórios Mensais</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Mês/Ano</th>
+        <th>Total Assinaturas</th>
+        <th>Valor Total</th>
+        <th>Pagas</th>
+        <th>Pendentes</th>
+        <th>Atrasadas</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for rel in relatorios %}
+        <tr>
+          <td>{{ rel.mes }}/{{ rel.ano }}</td>
+          <td>{{ rel.total_assinaturas }}</td>
+          <td>R$ {{ rel.total_valor_mensal }}</td>
+          <td>{{ rel.assinaturas_pagas }}</td>
+          <td>{{ rel.assinaturas_pendentes }}</td>
+          <td>{{ rel.assinaturas_atrasadas }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="6">Nenhum relatório mensal disponível.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</body>
+</html>

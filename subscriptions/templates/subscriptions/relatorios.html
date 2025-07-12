@@ -156,28 +156,23 @@
     </div>
 
     <!-- Exportar Todos -->
-    <div class="bg-white shadow rounded-lg p-6">
+    <div class="bg-white shadow rounded-lg p-6"> 
       <h2 class="text-lg font-semibold mb-1">Exportar Todos os Relatórios</h2>
-      <p class="text-gray-500 mb-4">Baixe todos os seus dados em diferentes formatos</p>
+      <p class="text-gray-500 mb-4">Baixe todos os seus dados em formato PDF</p>
+      
       <div class="flex flex-wrap gap-4">
-        <button class="bg-blue-600 text-white px-4 py-2 rounded flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download">
-                <path d="M12 15V3"/>
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <path d="m7 10 5 5 5-5"/>
-            </svg>
+        <a href="{% url 'relatorio_pdf' %}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded flex items-center hover:bg-blue-700 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15V3"/>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <path d="m7 10 5 5 5-5"/>
+          </svg>
           Exportar Relatório Completo (PDF)
-        </button>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download-icon lucide-download">
-                <path d="M12 15V3"/>
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <path d="m7 10 5 5 5-5"/>
-            </svg>
-          Exportar Dados (CSV)
-        </button>
+        </a>
       </div>
     </div>
+
   </div>
 </body>
 </html>
