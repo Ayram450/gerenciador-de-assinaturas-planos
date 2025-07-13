@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "django.contrib.humanize",
+    "widget_tweaks"
 ]
 
 ACCOUNT_SIGNUP_REDIRECT_URL = "/perfil/"
