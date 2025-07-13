@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;">
+    <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); padding: 30px;">
+      <h2 style="color: #2c3e50;">🎉 Assinatura Criada com Sucesso!</h2>
+      <p>Olá, <strong>{{ username }}</strong>!</p>
+      <p>Sua nova assinatura foi cadastrada com sucesso no <strong>SubscrybeFlow</strong> ٩(^ᗜ^ )و ´-</p>
+
+      <h3 style="color: #34495e;">🔔 Detalhes da Assinatura:</h3>
+      <ul style="list-style: none; padding: 0;">
+        <li><strong>Nome:</strong> {{ nome }}</li>
+        <li><strong>Empresa:</strong> {{ empresa }}</li>
+        <li><strong>Valor Mensal:</strong> R$ {{ valor }}</li>
+        <li><strong>Categoria:</strong> {{ categoria }}</li>
+        <li><strong>Método de Pagamento:</strong> {{ metPagar }}</li>
+        <li><strong>Data de Vencimento:</strong> {{ data_venc }}</li>
+      </ul>
+
+      <p style="margin-top: 20px;">📩 Você receberá um lembrete por e-mail <strong>5 dias antes</strong> do vencimento.</p>
+
+      <p style="color: #888;">Obrigado por usar o SubscrybeFlow!</p>
+    </div>
+  </body>
+</html>

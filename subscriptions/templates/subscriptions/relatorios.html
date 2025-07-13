@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatórios</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Voltar -->
+    <div class="mb-6">
+      <a href="{% url 'assinaturas' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"/></svg>
+        Voltar ao painel
+      </a>
+    </div>
+
+    <!-- Cabeçalho -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Relatórios</h1>
+      <p class="text-gray-600">Gere e exporte relatórios detalhados das suas assinaturas</p>
+    </div>
+
+    <div class="bg-white shadow rounded-lg mb-8">
+      <div class="px-6 py-4 border-b">
+        <h3 class="text-lg font-semibold">Relatórios Mensais</h3>
+        <p class="text-sm text-gray-500">Histórico detalhado das assinaturas por mês</p>
+      </div>
+      <div class="p-6 space-y-10">
+        {% if relatorios %}
+          {% for rel in relatorios %}
+          <div class="border rounded-lg shadow-sm">
+            <div class="bg-gray-50 px-4 py-3 border-b flex justify-between items-center">
+              <div>
+                <h4 class="text-md font-bold text-gray-800">Mês {{ rel.mes|stringformat:"02d" }}/{{ rel.ano }}</h4>
+                <p class="text-sm text-gray-500">
+                  Total: {{ rel.total_assinaturas }} Assinaturas — R$ {{ rel.total_valor_mensal }}
+                </p>
+              </div>
+              <div class="text-sm text-right text-gray-600">
+                Pagas: {{ rel.assinaturas_pagas }}<br>
+                Pendentes: {{ rel.assinaturas_pendentes }}<br>
+                Atrasadas: {{ rel.assinaturas_atrasadas }}
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm text-left">
+                <thead class="bg-gray-100 border-b text-gray-700">
+                  <tr>
+                    <th class="py-2 px-4">Nome</th>
+                    <th class="py-2 px-4">Empresa</th>
+                    <th class="py-2 px-4">Valor</th>
+                    <th class="py-2 px-4">Vencimento</th>
+                    <th class="py-2 px-4">Status</th>
+                    <th class="py-2 px-4">Categoria</th>
+                    <th class="py-2 px-4">Método</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if rel.assinaturas.all %}
+                    {% for sub in rel.assinaturas.all %}
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="py-2 px-4">{{ sub.nomeAssi }}</td>
+                      <td class="py-2 px-4">{{ sub.empresa }}</td>
+                      <td class="py-2 px-4">R$ {{ sub.valorMens }}</td>
+                      <td class="py-2 px-4">{{ sub.data_venc }}</td>
+                      <td class="py-2 px-4">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {% if sub.status == 'pago' %} bg-green-100 text-green-700
+                          {% elif sub.status == 'atrasado' %} bg-red-100 text-red-700
+                          {% else %} bg-yellow-100 text-yellow-700 {% endif %}">
+                          {{ sub.get_status_display }}
+                        </span>
+                      </td>
+                      <td class="py-2 px-4">{{ sub.get_categoria_display }}</td>
+                      <td class="py-2 px-4">{{ sub.get_metPagar_display }}</td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="7" class="py-3 px-4 text-gray-500">Nenhuma assinatura registrada neste mês.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-gray-500 text-sm">Nenhum relatório mensal disponível.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Exportar Todos -->
+    <div class="bg-white shadow rounded-lg p-6"> 
+      <h2 class="text-lg font-semibold mb-1">Exportar Todos os Relatórios</h2>
+      <p class="text-gray-500 mb-4">Exporte todos os seus dados em formato PDF</p>
+      
+      <div class="flex flex-wrap gap-4">
+        <a href="{% url 'relatorio_pdf' %}" class="bg-blue-600 text-white px-4 py-2 rounded flex items-center hover:bg-blue-700 transition">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+            class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 15V3"/>
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <path d="m7 10 5 5 5-5"/>
+          </svg>
+          Exportar Relatório Completo (PDF)
+        </a>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

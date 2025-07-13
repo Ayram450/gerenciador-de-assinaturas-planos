@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sobre - SubscrybeFlow</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+
+  <!-- Header -->
+  </head>
+  <body class="bg-gray-50 text-gray-900">
+    <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
+          <span class="text-white font-bold">S</span>
+        </div>
+        <span class="text-lg font-bold">SubscrybeFlow</span>
+      </div>
+      <nav class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="{% url 'homepage' %}" class="text-gray-700 hover:text-gray-900">Início</a>
+        <a href="{% url 'recursos' %}" class="text-gray-700 hover:text-gray-900">Recursos</a>
+        <a href="{% url 'sobre'  %}" class="text-gray-500 hover:text-gray-900">Sobre</a>
+      </nav>
+      <div class="flex items-center space-x-4 text-sm font-medium">
+        <a href="{% url 'account_login' %}" class="text-gray-900 hover:underline">Login/Cadastra-se</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="py-24 px-4 bg-gradient-to-br from-blue-50 to-indigo-100 text-center">
+    <div class="container max-w-5xl mx-auto">
+      <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-8">Sobre o <span class="text-blue-600">SubscrybeFlow</span></h1>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Nascemos da necessidade de simplificar o controle de assinaturas e transformar a forma como as pessoas gerenciam seus gastos recorrentes.</p>
+    </div>
+  </section>
+
+  <!-- About Content -->
+  <section class="py-24 px-4">
+    <div class="container max-w-5xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
+      <div>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8">Nossa Missão</h2>
+        <p class="text-gray-600 mb-8 text-lg leading-relaxed">Com o crescimento exponencial de serviços digitais e assinaturas online, muitas pessoas perderam o controle sobre seus gastos recorrentes...</p>
+
+        <div class="space-y-6">
+          <div class="flex items-start space-x-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mt-1 text-blue-600 font-bold">💰</div>
+            <div><h4 class="font-semibold text-lg mb-2">Controle Financeiro</h4><p class="text-gray-600">Gastos esquecidos com assinaturas</p></div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mt-1 text-blue-600 font-bold">📊</div>
+            <div><h4 class="font-semibold text-lg mb-2">Organização</h4><p class="text-gray-600">Centralize as informações</p></div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mt-1 text-blue-600 font-bold">🔔</div>
+            <div><h4 class="font-semibold text-lg mb-2">Prevenção</h4><p class="text-gray-600">Evite renovações automáticas indesejadas</p></div>
+          </div>
+
+          <div class="flex items-start space-x-4">
+            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mt-1 text-blue-600 font-bold">💡</div>
+            <div><h4 class="font-semibold text-lg mb-2">Economia</h4><p class="text-gray-600">Elimine serviços duplicados</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-8">
+        <div class="bg-white rounded-lg shadow p-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6">Nossa Visão</h3>
+          <p class="text-gray-600 text-lg leading-relaxed">Nossa plataforma permite que você cadastre todas as suas assinaturas, configure lembretes personalizados, gere relatórios detalhados e tenha uma visão completa dos seus gastos recorrentes. Gerenciar assinaturas não é só organizar cobranças, mas empoderar decisões conscientes.</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-8">
+          <h3 class="text-2xl font-bold text-gray-900 mb-6">Nossos Valores</h3>
+          <ul class="space-y-4">
+            <li class="flex items-center space-x-3"><span class="w-2 h-2 bg-blue-600 rounded-full"></span><span>Simplicidade e facilidade de uso</span></li>
+            <li class="flex items-center space-x-3"><span class="w-2 h-2 bg-blue-600 rounded-full"></span><span>Transparência total nos dados</span></li>
+            <li class="flex items-center space-x-3"><span class="w-2 h-2 bg-blue-600 rounded-full"></span><span>Segurança e privacidade</span></li>
+            <li class="flex items-center space-x-3"><span class="w-2 h-2 bg-blue-600 rounded-full"></span><span>Suporte dedicado aos usuários</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="py-24 px-4 bg-gray-50">
+    <div class="container max-w-5xl mx-auto text-center">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Entre em contato</h2>
+      <p class="text-xl text-gray-600 mb-12">Tem alguma dúvida ou sugestão? Estamos aqui para ajudar!</p>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-white rounded-lg shadow p-8">
+            <img src="{% static 'public/email.png' %}" alt="Ícone de e-mail" class="w-12 h-12 mt-1 mx-auto block">
+            <p class="mb-8"></p>
+          <h2 class="text-xl font-semibold mb-4">Email</h2>
+          <p class="text-sm text-gray-600 mb-2 text-center">subscrybeflow@gmail.com</p>
+          <p class="text-sm text-gray-500">Resposta em até 24h</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-8">
+            <img src="{% static 'public/telefone.png' %}" alt="Ícone de telefone" class="w-12 h-12 mt-1 mx-auto block">
+            <p class="mb-8"></p>
+          <h3 class="text-xl font-semibold mb-4">Telefone</h3>
+          <p class="text-gray-600 mb-2">(69) 3112-0000</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-8">
+            <img src="{% static 'public/horario.png' %}" alt="Ícone de horário" class="w-12 h-12 mt-1 mx-auto block">
+            <p class="mb-8"></p>
+          <h3 class="text-xl font-semibold mb-4">Horário</h3>
+          <p class="text-gray-600 mb-2">Segunda a Sexta</p>
+          <p class="text-sm text-gray-500">09:00 - 18:00</p>
+        </div>
+
+        <div class="bg-white rounded-lg shadow p-8">
+            <img src="{% static 'public/pin.png' %}" alt="Ícone de localização" class="w-12 h-12 mt-1 mx-auto block">
+            <p class="mb-8"></p>
+          <h3 class="text-xl font-semibold mb-4">Localização</h3>
+          <p class="text-gray-600 mb-2">Porto Velho - Rondônia</p>
+          <p class="text-sm text-gray-500">Brasil</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="py-12 px-4 bg-gray-900 text-white text-center">
+    <div class="container max-w-6xl mx-auto">
+      <div class="flex items-center justify-center space-x-2 mb-4">
+        <div class="h-8 w-8 bg-blue-600 rounded-lg flex items-center justify-center">
+          <span class="font-bold text-lg">S</span>
+        </div>
+        <span class="font-bold text-xl">SubscrybeFlow</span>
+      </div>
+      <p class="text-gray-400 mb-2">A maneira mais inteligente de gerenciar suas assinaturas e planos.</p>
+      <p class="text-sm text-gray-500">© 2024 SubscrybeFlow. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

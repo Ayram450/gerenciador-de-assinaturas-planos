@@ -1,0 +1,38 @@
+<h2 class="text-xl font-semibold mb-4">Dados do Usuário</h2>
+
+<div class="bg-white shadow rounded-lg p-4 mb-6">
+  <p><strong>Nome de Usuário:</strong> {{ usuario.username }}</p>
+  <p><strong>Email:</strong> {{ usuario.email }}</p>
+  <p><strong>Data de Cadastro:</strong> {{ usuario.date_joined|date:"d/m/Y" }}</p>
+</div>
+
+<h3 class="text-lg font-semibold mb-2">Assinaturas</h3>
+<table class="w-full border text-sm">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="p-2">Nome</th>
+      <th class="p-2">Empresa</th>
+      <th class="p-2">Vencimento</th>
+      <th class="p-2">Valor</th>
+      <th class="p-2">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for sub in assinaturas %}
+    <tr class="border-t">
+      <td class="p-2">{{ sub.nomeAssi }}</td>
+      <td class="p-2">{{ sub.empresa }}</td>
+      <td class="p-2">{{ sub.data_venc|date:"d/m/Y" }}</td>
+      <td class="p-2">R$ {{ sub.valorMens|floatformat:"2" }}</td>
+      <td class="p-2">{{ sub.status }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="p-2 text-center text-gray-500">Sem assinaturas.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- Botão Voltar -->
+<div class="mt-4">
+  <a href="{% url 'admin_dash' %}" class="text-blue-600 hover:text-blue-800">← Voltar</a>
+</div>

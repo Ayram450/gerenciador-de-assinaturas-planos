@@ -1,0 +1,12 @@
+{% load i18n %}
+{% load account %}
+{% load allauth %}
+{% user_display user as user_display %}
+{% element alert %}
+    {% slot message %}
+        <div class="text-center">
+            <strong>{% blocktranslate %}{% endblocktranslate %}</strong>
+            {% blocktranslate %}Você está conectado como {{ user_display }}{% endblocktranslate %}
+        </div>
+    {% endslot %}
+{% endelement %}

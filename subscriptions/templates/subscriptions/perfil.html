@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meu Perfil</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- navbar -->
+  <header class="bg-white shadow-sm">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <div class="h-8 w-8 rounded-lg bg-blue-600 flex items-center justify-center">
+          <span class="text-white font-bold">S</span>
+        </div>
+        <span class="text-lg font-bold">SubscrybeFlow</span>
+      </div>
+      <nav class="hidden md:flex space-x-6 text-sm font-medium">
+        <a href="{% url 'assinaturas' %}" class="text-gray-500 hover:text-gray-900">Assinaturas</a>
+        <a href="{% url 'perfil' %}" class="text-gray-700 hover:text-gray-900">Perfil</a>
+      </nav>
+      <div class="flex items-center space-x-4 text-sm font-medium">
+        <a href="{% url 'account_logout' %}" class="text-gray-900 hover:underline">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container mx-auto px-4 py-8">
+    <!-- Cabeçalho -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Meu Perfil</h1>
+      <p class="text-gray-600">Gerencie suas informações pessoais e configurações</p>
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- Sidebar do Perfil -->
+      <div class="lg:col-span-1">
+        <div class="bg-white shadow rounded-lg p-6 text-center">
+          <div id="avatar-fallback" class="w-24 h-24 mx-auto mb-4 rounded-full bg-gray-200 flex items-center justify-center text-2xl font-bold text-gray-700">
+            ?
+          </div>
+          <h2 class="text-xl font-bold mb-2">{{ user.username }}</h2>
+          <p class="text-gray-600 mb-4">{{ user.email }}</p>
+          <span class="inline-block bg-gray-200 text-gray-700 px-3 py-1 rounded text-sm mb-4">Básico</span>
+          <div class="text-sm text-gray-600 flex items-center justify-center space-x-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M8 7V3M16 7V3M3 11h18M5 19h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
+            </svg>
+            <span>Membro desde {{ user.date_joined|date:"d/m/Y" }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conteúdo Principal -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Aba: Informações Pessoais -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="border-b px-6 py-4">
+            <h3 class="text-lg font-semibold flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user-round-pen-icon lucide-user-round-pen">
+                <path d="M2 21a8 8 0 0 1 10.821-7.487"/>
+                <path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/>
+                <circle cx="10" cy="8" r="5"/>
+              </svg>
+              Dados Pessoais
+            </h3>
+          </div>
+          <div class="p-6 space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nome de Usuário</label>
+                <input
+                  type="text"
+                  name="username"
+                  value="{{ user.username }}"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  readonly
+                />
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  value="{{ user.email }}"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  readonly
+                />
+              </div>
+
+              <!-- Formulário de edição -->
+              <form method="post" class="space-y-4">
+                {% csrf_token %}
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                  {{ form.telefone }}
+                </div>
+
+                <div>
+                  <label class="block text-sm font-medium text-gray-700 mb-1">Data de Nascimento</label>
+                  {{ form.data_nascimento }}
+                </div>
+
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white w-full py-2 rounded">
+                  Salvar Alterações
+                </button>
+              </form>
+
+        <!-- Aba: Segurança -->
+        <div class="bg-white shadow rounded-lg">
+          <div class="border-b px-6 py-4">
+            <h3 class="text-lg font-semibold flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-lock-keyhole-icon lucide-lock-keyhole">
+                <circle cx="12" cy="16" r="1"/>
+                <rect x="3" y="10" width="18" height="12" rx="2"/>
+                <path d="M7 10V7a5 5 0 0 1 10 0v3"/>
+              </svg>
+              Segurança
+            </h3>
+          </div>
+          <div class="p-6 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-1">Alterar Senha</label>
+              <p class="text-gray-500 text-sm">Altere sua senha para manter sua conta segura.</p>
+            </div>
+            <a href="{% url 'account_reset_password' %}" class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-2 rounded">
+              Alterar Senha
+            </a>
+          </div>
+        </div>
+
+    </div>
+  </div>
+
+  {% comment %} <!-- Modal de alteração de senha -->
+   <div id="modalSenha" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-blue-600 bg-white rounded-lg shadow-lg w-full max-w-md p-6">
+        <h2 class="text-xl font-semibold mb-4">Alterar Senha</h2>
+        <form class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Senha Atual</label>
+                <input type="password" class="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite sua senha atual" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Nova Senha</label>
+                <input type="password" class="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Digite a nova senha" />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Confirmar Nova Senha</label>
+                <input type="password" class="w-full border px-4 py-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Confirme a nova senha" />
+            </div>
+            <div class="flex justify-end gap-2 pt-4">
+                <button type="button" onclick="document.getElementById('modalSenha').classList.add('hidden')" class="px-4 py-2 border rounded hover:bg-gray-100">
+                Cancelar
+                </button>
+                <button type="button" onclick="mostrarToast(); document.getElementById('modalSenha').classList.add('hidden')" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                Salvar
+                </button>
+            </div>
+        </form>
+    </div>
+   </div> {% endcomment %}
+
+
+  <!-- Script para atualizar as iniciais do avatar -->
+  <script>
+    const nomeInput = document.getElementById("nome-completo");
+    const avatarFallback = document.getElementById("avatar-fallback");
+
+    function gerarIniciais(nomeCompleto) {
+      if (!nomeCompleto.trim()) return "?";
+      const partes = nomeCompleto.trim().split(" ");
+      let iniciais = partes[0].charAt(0).toUpperCase();
+      if (partes.length > 1) {
+        iniciais += partes[partes.length - 1].charAt(0).toUpperCase();
+      }
+      return iniciais;
+    }
+
+    nomeInput.addEventListener("input", () => {
+      avatarFallback.textContent = gerarIniciais(nomeInput.value);
+    });
+  </script>
+
+    <!-- Toast de sucesso -->
+    <div id="toast-success" class="fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded shadow-lg hidden z-50" role="alert">
+    <strong class="font-semibold">Sucesso!</strong>
+    <span class="block sm:inline">Suas informações foram salvas.</span>
+    </div>
+
+    <script>
+    function mostrarToast() {
+        const toast = document.getElementById("toast-success");
+        toast.classList.remove("hidden");
+        
+        // Oculta após 4 segundos
+        setTimeout(() => {
+        toast.classList.add("hidden");
+        }, 4000);
+    }
+    </script>
+
+</body>
+</html>
