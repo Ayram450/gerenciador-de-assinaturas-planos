@@ -4,6 +4,9 @@
 {% user_display user as user_display %}
 {% element alert %}
     {% slot message %}
-        <strong>{% blocktranslate %}{% endblocktranslate %}</strong> {% blocktranslate %}You are already logged in as {{ user_display }}.{% endblocktranslate %}
+        <div class="text-center">
+            <strong>{% blocktranslate %}{% endblocktranslate %}</strong>
+            {% blocktranslate %}Você está conectado como {{ user_display }}{% endblocktranslate %}
+        </div>
     {% endslot %}
 {% endelement %}
