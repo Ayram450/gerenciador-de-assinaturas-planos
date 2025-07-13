@@ -11,13 +11,15 @@ from django.urls import reverse_lazy
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import User
 from django import forms
-
+import threading
 
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 
-
+from django.core.mail import EmailMessage
+from io import BytesIO
+from django.contrib import messages
 
 
 class SubscriptionListView(ListView):
@@ -366,26 +368,47 @@ def gerar_relatorio_do_mes(mes, ano, request):
 def exportar_relatorio_pdf(request):
     hoje = datetime.now()
     gerar_relatorio_do_mes(hoje.month, hoje.year, request)
+
     assinaturas = Subscription.objects.filter(user=request.user)
-    relatorios_mensais = RelatorioMensal.objects.all()
+    relatorios_mensais = RelatorioMensal.objects.filter(
+        mes=hoje.month, ano=hoje.year
+    )
 
-    template_path = 'subscriptions/pdf_template.html'
+    template_path = "subscriptions/pdf_template.html"
     context = {
-        'usuario': request.user,
-        'assinaturas': assinaturas,
-        'relatorios': relatorios_mensais,
-        'data_hoje': datetime.now()
+        "usuario": request.user,
+        "assinaturas": assinaturas,
+        "relatorios": relatorios_mensais,
+        "data_hoje": hoje,
     }
-
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="relatorio_subscricoes.pdf"'
 
     template = get_template(template_path)
     html = template.render(context)
 
-    pisa_status = pisa.CreatePDF(html, dest=response)
+    result = BytesIO()
+    pisa_status = pisa.CreatePDF(html, dest=result)
 
     if pisa_status.err:
-        return HttpResponse('Erro ao gerar o PDF', status=500)
-    return response
+        messages.error(request, "Erro ao gerar o PDF.")
+        return redirect("relatorios")
 
+    # Prepara o e-mail
+    email = EmailMessage(
+        subject="Relatório de Assinaturas",
+        body="Segue em anexo o relatório completo de suas assinaturas.",
+        from_email="DEFAULT_FROM_EMAIL",  # ou settings.DEFAULT_FROM_EMAIL
+        to=[request.user.email],
+    )
+    email.attach("Relatórios.pdf", result.getvalue(), "application/pdf")
+
+    # Envia o e-mail em segundo plano
+    def enviar_email():
+        try:
+            email.send()
+        except Exception as e:
+            print(f"[Erro ao enviar e-mail]: {e}")
+
+    threading.Thread(target=enviar_email).start()
+
+    messages.success(request, "Relatório enviado para seu e-mail com sucesso!")
+    return redirect("relatorios")

@@ -54,114 +54,124 @@
       </div>
     </div>
 
-    <!-- Resumo e Histórico -->
+    <!-- Resultados Separados -->
     <div class="grid md:grid-cols-2 gap-8 mb-8">
-      <div class="bg-white shadow rounded-lg">
+
+      <!-- Assinaturas Atuais -->
+      <div class="bg-white shadow rounded-lg mb-8">
         <div class="flex items-center justify-between px-6 py-4 border-b">
           <div>
-            <h3 class="text-lg font-semibold">Resumo Financeiro</h3>
-            <p class="text-sm text-gray-500">Gastos por mês em 2024</p>
+            <h3 class="text-lg font-semibold">Assinaturas Atuais</h3>
+            <p class="text-sm text-gray-500">Todos os serviços ativos</p>
           </div>
           <div class="flex space-x-2">
-            <button class="flex items-center border rounded px-3 py-1 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text-icon lucide-file-text">
-                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                    <path d="M10 9H8"/>
-                    <path d="M16 13H8"/>
-                    <path d="M16 17H8"/>
-                </svg>
+            <a href="{% url 'relatorio_pdf' %}" class="flex items-center border rounded px-3 py-1 text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                <path d="M10 9H8"/>
+                <path d="M16 13H8"/>
+                <path d="M16 17H8"/>
+              </svg>
               PDF
-            </button>
-            <button class="flex items-center border rounded px-3 py-1 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-spreadsheet-icon lucide-file-spreadsheet">
-                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                    <path d="M8 13h2"/>
-                    <path d="M14 13h2"/>
-                    <path d="M8 17h2"/>
-                    <path d="M14 17h2"/>
-                </svg>
-              CSV
-            </button>
+            </a>
           </div>
         </div>
         <div class="overflow-x-auto p-6">
           <table class="w-full text-sm text-left">
             <thead>
               <tr class="border-b">
-                <th class="py-2">Mês</th>
-                <th class="py-2">Total Gasto</th>
-                <th class="py-2">Assinaturas</th>
+                <th class="py-2">Nome</th>
+                <th class="py-2">Empresa</th>
+                <th class="py-2">Vencimento</th>
+                <th class="py-2">Status</th>
+                <th class="py-2">Categoria</th>
+                <th class="py-2">Método</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Janeiro 2024</td><td>R$ 450,00</td><td>8</td></tr>
-              <tr><td>Fevereiro 2024</td><td>R$ 520,00</td><td>9</td></tr>
-              <tr><td>Março 2024</td><td>R$ 380,00</td><td>7</td></tr>
-              <tr><td>Abril 2024</td><td>R$ 620,00</td><td>11</td></tr>
+              {% for ass in assinaturas %}
+              <tr>
+                <td>{{ ass.nomeAssi }}<br><span class="text-xs text-gray-500">{{ ass.empresa }}</span></td>
+                <td>R$ {{ ass.valorMens }}</td>
+                <td>
+                  <span class="px-2 py-1 rounded-full text-xs
+                    {% if ass.status == 'pago' %}bg-green-100 text-green-700
+                    {% elif ass.status == 'atrasado' %}bg-red-100 text-red-700
+                    {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                    {{ ass.get_status_display }}
+                  </span>
+                </td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="3" class="text-gray-500 text-sm py-2">Nenhuma assinatura encontrada.</td>
+              </tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
 
+      <!-- Relatórios Mensais -->
       <div class="bg-white shadow rounded-lg">
         <div class="flex items-center justify-between px-6 py-4 border-b">
           <div>
-            <h3 class="text-lg font-semibold">Histórico de Assinaturas</h3>
-            <p class="text-sm text-gray-500">Todas as suas assinaturas</p>
+            <h3 class="text-lg font-semibold">Relatórios Mensais</h3>
+            <p class="text-sm text-gray-500">Resumo por mês</p>
           </div>
           <div class="flex space-x-2">
-            <button class="flex items-center border rounded px-3 py-1 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text-icon lucide-file-text">
-                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                    <path d="M10 9H8"/>
-                    <path d="M16 13H8"/>
-                    <path d="M16 17H8"/>
-                </svg>
-              PDF
-            </button>
-            <button class="flex items-center border rounded px-3 py-1 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-spreadsheet-icon lucide-file-spreadsheet">
-                    <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                    <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                    <path d="M8 13h2"/>
-                    <path d="M14 13h2"/>
-                    <path d="M8 17h2"/>
-                    <path d="M14 17h2"/>
-                </svg>
+            <a href="#" class="flex items-center border rounded px-3 py-1 text-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
+                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
+                <path d="M8 13h2"/>
+                <path d="M14 13h2"/>
+                <path d="M8 17h2"/>
+                <path d="M14 17h2"/>
+              </svg>
               CSV
-            </button>
+            </a>
           </div>
         </div>
         <div class="overflow-x-auto p-6">
           <table class="w-full text-sm text-left">
             <thead>
               <tr class="border-b">
-                <th class="py-2">Serviço</th>
-                <th class="py-2">Valor</th>
-                <th class="py-2">Status</th>
+                <th class="py-2">Mês/Ano</th>
+                <th class="py-2">Total Assinaturas</th>
+                <th class="py-2">Valor Total</th>
+                <th class="py-2">Pagas</th>
+                <th class="py-2">Pendentes</th>
+                <th class="py-2">Atrasadas</th>
               </tr>
             </thead>
             <tbody>
-              <tr><td>Netflix<br><span class="text-xs text-gray-500">Premium</span></td><td>R$ 55,90</td><td><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Ativa</span></td></tr>
-              <tr><td>Spotify<br><span class="text-xs text-gray-500">Individual</span></td><td>R$ 21,90</td><td><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Ativa</span></td></tr>
-              <tr><td>Adobe Creative<br><span class="text-xs text-gray-500">Completo</span></td><td>R$ 239,90</td><td><span class="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">Ativa</span></td></tr>
-              <tr><td>Canva Pro<br><span class="text-xs text-gray-500">Anual</span></td><td>R$ 399,90</td><td><span class="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs">Cancelada</span></td></tr>
+              {% for rel in relatorios %}
+              <tr>
+                <td>{{ rel.mes|stringformat:"02d" }}/{{ rel.ano }}</td>
+                <td>{{ rel.total_assinaturas }}</td>
+                <td>R$ {{ rel.total_valor_mensal }}</td>
+              </tr>
+              {% empty %}
+              <tr><td colspan="3" class="text-gray-500 text-sm py-2">Nenhum relatório disponível.</td></tr>
+              {% endfor %}
             </tbody>
           </table>
         </div>
       </div>
-    </div>
+
+
 
     <!-- Exportar Todos -->
     <div class="bg-white shadow rounded-lg p-6"> 
       <h2 class="text-lg font-semibold mb-1">Exportar Todos os Relatórios</h2>
-      <p class="text-gray-500 mb-4">Baixe todos os seus dados em formato PDF</p>
+      <p class="text-gray-500 mb-4">Exporte todos os seus dados em formato PDF</p>
       
       <div class="flex flex-wrap gap-4">
-        <a href="{% url 'relatorio_pdf' %}" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded flex items-center hover:bg-blue-700 transition">
+        <a href="{% url 'relatorio_pdf' %}" class="bg-blue-600 text-white px-4 py-2 rounded flex items-center hover:bg-blue-700 transition">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
             class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 15V3"/>

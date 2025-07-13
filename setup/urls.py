@@ -41,7 +41,7 @@ urlpatterns = [
     path('admin-dashboard/', administrador_view, name='admin_dash'),
     path("excluir-usuario/<int:user_id>/", ExcluirUsuarioView.as_view(), name="excluir_usuario"),
     path("dados-usuarios/<int:pk>/", DadosUsuarioView.as_view(), name="dados_usuario"),
-    path('relatorios/pdf/', exportar_relatorio_pdf, name='relatorio_pdf'),
+    path('relatorios/enviar-email/', exportar_relatorio_pdf, name='relatorio_pdf'),
    
   
     
