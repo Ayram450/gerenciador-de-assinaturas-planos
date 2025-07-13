@@ -269,12 +269,10 @@ def lembretes(request):
         },
     )
 
-
+@login_required
 def relatorios(request):
-    return render(
-        request,
-        "subscriptions/relatorios.html",
-    )
+    relatorios = RelatorioMensal.objects.prefetch_related("assinaturas").all()
+    return render(request, "subscriptions/relatorios.html", {"relatorios": relatorios})
 
 
 @login_required

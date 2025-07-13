@@ -23,147 +23,76 @@
       <p class="text-gray-600">Gere e exporte relatórios detalhados das suas assinaturas</p>
     </div>
 
-    <!-- Filtros -->
-    <div class="bg-white shadow rounded-lg p-6 mb-8">
-      <h2 class="text-xl font-semibold mb-1">Gerar Novo Relatório</h2>
-      <p class="text-gray-500 mb-4">Selecione o tipo de relatório e período desejado</p>
-      <div class="grid md:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-sm font-medium mb-2">Tipo de Relatório</label>
-          <select class="w-full border px-4 py-2 rounded-lg">
-            <option disabled selected>Selecione o tipo</option>
-            <option>Resumo Financeiro</option>
-            <option>Histórico de Assinaturas</option>
-            <option>Comparativo de Despesas</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-sm font-medium mb-2">Período</label>
-          <select class="w-full border px-4 py-2 rounded-lg">
-            <option disabled selected>Selecione o período</option>
-            <option>Mês Atual</option>
-            <option>Último Mês</option>
-            <option>Últimos 3 Meses</option>
-            <option>Ano Atual</option>
-            <option>Ano Passado</option>
-          </select>
-        </div>
-        <div class="flex items-end">
-          <button class="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Gerar Relatório</button>
-        </div>
+    <div class="bg-white shadow rounded-lg mb-8">
+      <div class="px-6 py-4 border-b">
+        <h3 class="text-lg font-semibold">Relatórios Mensais</h3>
+        <p class="text-sm text-gray-500">Histórico detalhado das assinaturas por mês</p>
+      </div>
+      <div class="p-6 space-y-10">
+        {% if relatorios %}
+          {% for rel in relatorios %}
+          <div class="border rounded-lg shadow-sm">
+            <div class="bg-gray-50 px-4 py-3 border-b flex justify-between items-center">
+              <div>
+                <h4 class="text-md font-bold text-gray-800">Mês {{ rel.mes|stringformat:"02d" }}/{{ rel.ano }}</h4>
+                <p class="text-sm text-gray-500">
+                  Total: {{ rel.total_assinaturas }} Assinaturas — R$ {{ rel.total_valor_mensal }}
+                </p>
+              </div>
+              <div class="text-sm text-right text-gray-600">
+                Pagas: {{ rel.assinaturas_pagas }}<br>
+                Pendentes: {{ rel.assinaturas_pendentes }}<br>
+                Atrasadas: {{ rel.assinaturas_atrasadas }}
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="min-w-full text-sm text-left">
+                <thead class="bg-gray-100 border-b text-gray-700">
+                  <tr>
+                    <th class="py-2 px-4">Nome</th>
+                    <th class="py-2 px-4">Empresa</th>
+                    <th class="py-2 px-4">Valor</th>
+                    <th class="py-2 px-4">Vencimento</th>
+                    <th class="py-2 px-4">Status</th>
+                    <th class="py-2 px-4">Categoria</th>
+                    <th class="py-2 px-4">Método</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% if rel.assinaturas.all %}
+                    {% for sub in rel.assinaturas.all %}
+                    <tr class="border-b hover:bg-gray-50">
+                      <td class="py-2 px-4">{{ sub.nomeAssi }}</td>
+                      <td class="py-2 px-4">{{ sub.empresa }}</td>
+                      <td class="py-2 px-4">R$ {{ sub.valorMens }}</td>
+                      <td class="py-2 px-4">{{ sub.data_venc }}</td>
+                      <td class="py-2 px-4">
+                        <span class="px-2 py-1 rounded-full text-xs font-medium
+                          {% if sub.status == 'pago' %} bg-green-100 text-green-700
+                          {% elif sub.status == 'atrasado' %} bg-red-100 text-red-700
+                          {% else %} bg-yellow-100 text-yellow-700 {% endif %}">
+                          {{ sub.get_status_display }}
+                        </span>
+                      </td>
+                      <td class="py-2 px-4">{{ sub.get_categoria_display }}</td>
+                      <td class="py-2 px-4">{{ sub.get_metPagar_display }}</td>
+                    </tr>
+                    {% endfor %}
+                  {% else %}
+                    <tr>
+                      <td colspan="7" class="py-3 px-4 text-gray-500">Nenhuma assinatura registrada neste mês.</td>
+                    </tr>
+                  {% endif %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          {% endfor %}
+        {% else %}
+          <p class="text-gray-500 text-sm">Nenhum relatório mensal disponível.</p>
+        {% endif %}
       </div>
     </div>
-
-    <!-- Resultados Separados -->
-    <div class="grid md:grid-cols-2 gap-8 mb-8">
-
-      <!-- Assinaturas Atuais -->
-      <div class="bg-white shadow rounded-lg mb-8">
-        <div class="flex items-center justify-between px-6 py-4 border-b">
-          <div>
-            <h3 class="text-lg font-semibold">Assinaturas Atuais</h3>
-            <p class="text-sm text-gray-500">Todos os serviços ativos</p>
-          </div>
-          <div class="flex space-x-2">
-            <a href="{% url 'relatorio_pdf' %}" class="flex items-center border rounded px-3 py-1 text-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                <path d="M10 9H8"/>
-                <path d="M16 13H8"/>
-                <path d="M16 17H8"/>
-              </svg>
-              PDF
-            </a>
-          </div>
-        </div>
-        <div class="overflow-x-auto p-6">
-          <table class="w-full text-sm text-left">
-            <thead>
-              <tr class="border-b">
-                <th class="py-2">Nome</th>
-                <th class="py-2">Empresa</th>
-                <th class="py-2">Vencimento</th>
-                <th class="py-2">Status</th>
-                <th class="py-2">Categoria</th>
-                <th class="py-2">Método</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for ass in assinaturas %}
-              <tr>
-                <td>{{ ass.nomeAssi }}<br><span class="text-xs text-gray-500">{{ ass.empresa }}</span></td>
-                <td>R$ {{ ass.valorMens }}</td>
-                <td>
-                  <span class="px-2 py-1 rounded-full text-xs
-                    {% if ass.status == 'pago' %}bg-green-100 text-green-700
-                    {% elif ass.status == 'atrasado' %}bg-red-100 text-red-700
-                    {% else %}bg-yellow-100 text-yellow-700{% endif %}">
-                    {{ ass.get_status_display }}
-                  </span>
-                </td>
-              </tr>
-              {% empty %}
-              <tr>
-                <td colspan="3" class="text-gray-500 text-sm py-2">Nenhuma assinatura encontrada.</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <!-- Relatórios Mensais -->
-      <div class="bg-white shadow rounded-lg">
-        <div class="flex items-center justify-between px-6 py-4 border-b">
-          <div>
-            <h3 class="text-lg font-semibold">Relatórios Mensais</h3>
-            <p class="text-sm text-gray-500">Resumo por mês</p>
-          </div>
-          <div class="flex space-x-2">
-            <a href="#" class="flex items-center border rounded px-3 py-1 text-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-                <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-                <path d="M8 13h2"/>
-                <path d="M14 13h2"/>
-                <path d="M8 17h2"/>
-                <path d="M14 17h2"/>
-              </svg>
-              CSV
-            </a>
-          </div>
-        </div>
-        <div class="overflow-x-auto p-6">
-          <table class="w-full text-sm text-left">
-            <thead>
-              <tr class="border-b">
-                <th class="py-2">Mês/Ano</th>
-                <th class="py-2">Total Assinaturas</th>
-                <th class="py-2">Valor Total</th>
-                <th class="py-2">Pagas</th>
-                <th class="py-2">Pendentes</th>
-                <th class="py-2">Atrasadas</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for rel in relatorios %}
-              <tr>
-                <td>{{ rel.mes|stringformat:"02d" }}/{{ rel.ano }}</td>
-                <td>{{ rel.total_assinaturas }}</td>
-                <td>R$ {{ rel.total_valor_mensal }}</td>
-              </tr>
-              {% empty %}
-              <tr><td colspan="3" class="text-gray-500 text-sm py-2">Nenhum relatório disponível.</td></tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-
 
     <!-- Exportar Todos -->
     <div class="bg-white shadow rounded-lg p-6"> 
