@@ -27,11 +27,11 @@ Sistema de Gestão de Assinaturas e Planos
 ## 🛠 Tecnologias utilizadas
 
 | Camada         | Tecnologias                     |
-|----------------|----------------------------------|
-| Front-end      |                                 |
-| Estilização    |                                 |
-| Back-end       |                                 |
-| Banco de dados |                                 |
+|----------------|---------------------------------|
+| Front-end      | HTML                            |
+| Estilização    | Tailwind CSS                    |
+| Back-end       | Django (Python)                 |
+| Banco de dados | SQLite3                         |
 
 ---
 
