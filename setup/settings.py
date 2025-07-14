@@ -34,14 +34,9 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "django.contrib.humanize",
-    "widget_tweaks"
+    "widget_tweaks",
 ]
 
-ACCOUNT_SIGNUP_REDIRECT_URL = "/perfil/"
-LOGIN_URL = "/accounts/login/"
-LOGIN_REDIRECT_URL = "/perfil/"
-LOGIN_REDIRECT_URL = "/redirecionar/"
-ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -110,6 +105,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+LOGIN_URL = "/accounts/login/"
+LOGIN_REDIRECT_URL = "/redirecionar/"
+ACCOUNT_SIGNUP_REDIRECT_URL = "/perfil/"
+ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/

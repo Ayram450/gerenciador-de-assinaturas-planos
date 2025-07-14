@@ -4,7 +4,7 @@ from django.utils import timezone
 from subscriptions.models import Subscription
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, View
+from django.views.generic import View
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.db.models import Q
@@ -70,9 +70,10 @@ def administrador_view(request):
 
 @login_required
 def redirecionar_apos_login(request):
-    if request.user.is_superuser:
+    if request.user.is_superuser or request.user.is_staff:
         return redirect("admin_dash")
-    return redirect("perfil")
+    else:
+        return redirect("perfil")
 
 @method_decorator(staff_member_required, name='dispatch')
 class ExcluirUsuarioView(View):
