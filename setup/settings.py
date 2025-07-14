@@ -105,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+LOGIN_REDIRECT_URL = "/perfil/"
 LOGIN_URL = "/accounts/login/"
 LOGIN_REDIRECT_URL = "/redirecionar/"
 ACCOUNT_SIGNUP_REDIRECT_URL = "/perfil/"
