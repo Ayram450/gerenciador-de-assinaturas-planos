@@ -78,6 +78,7 @@ class Subscription(models.Model):
 
 
 class RelatorioMensal(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) 
     mes = models.IntegerField()
     ano = models.IntegerField()
     total_assinaturas = models.IntegerField()
@@ -97,7 +98,7 @@ class RelatorioMensal(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('mes', 'ano')
+        unique_together = ('user', 'mes', 'ano')
         ordering = ['-ano', '-mes']
 
     def __str__(self):

@@ -271,8 +271,9 @@ def lembretes(request):
 
 @login_required
 def relatorios(request):
-    relatorios = RelatorioMensal.objects.prefetch_related("assinaturas").all()
-    return render(request, "subscriptions/relatorios.html", {"relatorios": relatorios})
+    relatorios = RelatorioMensal.objects.filter(user=request.user).order_by('-ano', '-mes')
+    return render(request, 'subscriptions/relatorios.html', {'relatorios': relatorios})
+
 
 
 @login_required
@@ -310,9 +311,9 @@ def perfil(request):
     return render(request, "subscriptions/perfil.html", {"user": user, "form": form})
 
 
-def gerar_relatorio_do_mes(mes, ano, request):
+def gerar_relatorio_do_mes(mes, ano, user):
     assinaturas = Subscription.objects.filter(
-        data_venc__month=mes, data_venc__year=ano, user=request.user
+        data_venc__month=mes, data_venc__year=ano, user=user
     )
 
     total_assinaturas = assinaturas.count()
@@ -325,6 +326,7 @@ def gerar_relatorio_do_mes(mes, ano, request):
     relatorio, created = RelatorioMensal.objects.update_or_create(
         mes=mes,
         ano=ano,
+        user=user,
         defaults={
             "total_assinaturas": total_assinaturas,
             "total_valor_mensal": total_valor,
@@ -337,6 +339,7 @@ def gerar_relatorio_do_mes(mes, ano, request):
             "valor_atrasadas": atrasadas.aggregate(total=Sum("valorMens"))["total"]
             or 0,
             "proximos_vencimentos": Subscription.objects.filter(
+                user=user,
                 data_venc__gt=timezone.now().date()
             ).count(),
         },
@@ -365,11 +368,12 @@ def gerar_relatorio_do_mes(mes, ano, request):
 @login_required
 def exportar_relatorio_pdf(request):
     hoje = datetime.now()
-    gerar_relatorio_do_mes(hoje.month, hoje.year, request)
+    gerar_relatorio_do_mes(hoje.month, hoje.year, request.user)
 
     assinaturas = Subscription.objects.filter(user=request.user)
+    
     relatorios_mensais = RelatorioMensal.objects.filter(
-        mes=hoje.month, ano=hoje.year
+        user=request.user, mes=hoje.month, ano=hoje.year
     )
 
     template_path = "subscriptions/pdf_template.html"
