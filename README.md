@@ -31,7 +31,7 @@ Painel administrativo com:
 O sistema está sendo desenvolvido com foco em funcionalidades essenciais e experiência do usuário. Ele pode ser executado localmente ou implantado em um servidor web compatível com Django.
 Para rodar localmente:
 
-git clone <link-do-repositório>
+git clone <https://github.com/Ayram450/gerenciador-de-assinaturas-planos>
 cd gerenciador-de-assinaturas-planos
 python manage.py runserver
 
