@@ -22,6 +22,7 @@ from io import BytesIO
 from django.contrib import messages
 
 
+
 class SubscriptionListView(ListView):
     model = Subscription
     template_name = "subscriptions/subscription_list.html"
