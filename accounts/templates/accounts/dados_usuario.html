@@ -1,38 +1,93 @@
-<h2 class="text-xl font-semibold mb-4">Dados do Usuário</h2>
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lista de Usuários</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+  <div class="container mx-auto px-4 pt-4">
 
-<div class="bg-white shadow rounded-lg p-4 mb-6">
-  <p><strong>Nome de Usuário:</strong> {{ usuario.username }}</p>
-  <p><strong>Email:</strong> {{ usuario.email }}</p>
-  <p><strong>Data de Cadastro:</strong> {{ usuario.date_joined|date:"d/m/Y" }}</p>
-</div>
+    <!-- Navbar alinhada com espaçamento reduzido -->
+    <div class="flex justify-between items-center mb-4">
+      <!-- Botão Voltar -->
+      <a href="{% url 'admin_dash' %}" class="inline-flex items-center text-blue-600 hover:text-blue-800">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        Voltar ao painel
+      </a>
+    </div>
 
-<h3 class="text-lg font-semibold mb-2">Assinaturas</h3>
-<table class="w-full border text-sm">
-  <thead class="bg-gray-100">
-    <tr>
-      <th class="p-2">Nome</th>
-      <th class="p-2">Empresa</th>
-      <th class="p-2">Vencimento</th>
-      <th class="p-2">Valor</th>
-      <th class="p-2">Status</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for sub in assinaturas %}
-    <tr class="border-t">
-      <td class="p-2">{{ sub.nomeAssi }}</td>
-      <td class="p-2">{{ sub.empresa }}</td>
-      <td class="p-2">{{ sub.data_venc|date:"d/m/Y" }}</td>
-      <td class="p-2">R$ {{ sub.valorMens|floatformat:"2" }}</td>
-      <td class="p-2">{{ sub.status }}</td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="5" class="p-2 text-center text-gray-500">Sem assinaturas.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
+    <main class="pt-2">
 
-<!-- Botão Voltar -->
-<div class="mt-4">
-  <a href="{% url 'admin_dash' %}" class="text-blue-600 hover:text-blue-800">← Voltar</a>
-</div>
+      <!-- Título -->
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Usuários Cadastrados</h2>
+
+      <!-- Tabela de Usuários -->
+      <div class="bg-white shadow rounded-lg overflow-hidden mb-8">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100 text-left text-gray-700">
+            <tr>
+              <th class="p-4">Nome de Usuário</th>
+              <th class="p-4">Email</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr>
+              <td class="p-4">{{ usuario.username }}</td>
+              <td class="p-4">{{ usuario.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Dados do Usuário -->
+      <section class="mb-8">
+        <h2 class="text-xl font-semibold text-gray-800 mb-3">Dados do Usuário</h2>
+        <div class="bg-white shadow rounded-lg p-4 space-y-2 text-gray-700">
+          <p><strong>Nome de Usuário:</strong> {{ usuario.username }}</p>
+          <p><strong>Email:</strong> {{ usuario.email }}</p>
+          <p><strong>Data de Cadastro:</strong> {{ usuario.date_joined|date:"d/m/Y" }}</p>
+        </div>
+      </section>
+
+      <!-- Assinaturas -->
+      <section>
+        <h3 class="text-lg font-semibold text-gray-800 mb-3">Assinaturas</h3>
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-gray-100 text-gray-700">
+              <tr>
+                <th class="p-3">Nome</th>
+                <th class="p-3">Empresa</th>
+                <th class="p-3">Vencimento</th>
+                <th class="p-3">Valor</th>
+                <th class="p-3">Status</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              {% for sub in assinaturas %}
+              <tr>
+                <td class="p-3">{{ sub.nomeAssi }}</td>
+                <td class="p-3">{{ sub.empresa }}</td>
+                <td class="p-3">{{ sub.data_venc|date:"d/m/Y" }}</td>
+                <td class="p-3">R$ {{ sub.valorMens|floatformat:"2" }}</td>
+                <td class="p-3">{{ sub.status }}</td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="p-4 text-center text-gray-500">Sem assinaturas.</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</body>
+</html>

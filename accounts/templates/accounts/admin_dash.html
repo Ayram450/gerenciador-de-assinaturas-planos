@@ -19,7 +19,7 @@
         <p class="text-gray-500">{{ user.username }}</p>
       </div>
       <div class="flex items-center space-x-4 text-sm font-medium">
-        <a href="{% url 'account_logout' %}" class="text-gray-900 hover:underline">Sair</a>
+        <a href="{% url 'account_logout' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Sair</a>
       </div>
     </div>
   </header>
@@ -39,12 +39,12 @@
 
         <div class="bg-white p-4 shadow rounded-lg">
             <p class="text-sm text-gray-600">Assinaturas Totais</p>
-            <div class="text-2xl font-bold text-green-600 mt-2">{{ total_assinaturas }}</div>
+            <div class="text-2xl font-bold text-green-950 mt-2">{{ total_assinaturas }}</div>
         </div>
 
         <div class="bg-white p-4 shadow rounded-lg">
             <p class="text-sm text-gray-600">Receita do Mês</p>
-            <div class="text-2xl font-bold text-indigo-600 mt-2">R$ {{ receita_total_mes|floatformat:2 }}</div>
+            <div class="text-2xl font-bold text-lime-500 mt-2">R$ {{ receita_total_mes|floatformat:2 }}</div>
         </div>
 
         <div class="bg-white p-4 shadow rounded-lg">
@@ -72,16 +72,18 @@
         <td class="p-2">{{ user.email }}</td>
         <td class="p-2">{{ user.date_joined|date:"d/m/Y" }}</td>
         <td class="p-2">{{ user.qtd_assinaturas }}</td>
-        <td class="p-2">
-            {% if user.id %}
-            <a href="{% url 'dados_usuario' user.id %}" class="text-blue-600 hover:text-blue-800">Ver dados</a>
-            <form method="post" action="{% url 'excluir_usuario' user.id %}" onsubmit="return confirm('Tem certeza que deseja excluir este usuário?')">
+        <td class="p-2 w-40">
+          {% if user.id %}
+            <div class="flex justify-end space-x-2 mb-4">
+              <a href="{% url 'dados_usuario' user.id %}" class="bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200 whitespace-nowrap">Ver dados</a>
+              <form method="post" action="{% url 'excluir_usuario' user.id %}" onsubmit="return confirm('Tem certeza que deseja excluir este usuário?')" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit" class="text-red-600 hover:text-red-800">Excluir</button>
-            </form>
-            {% else %}
+                <button type="submit" class="bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 whitespace-nowrap">Excluir</button>
+              </form>
+            </div>
+          {% else %}
             <span class="text-gray-400 italic">ID inválido</span>
-            {% endif %}
+          {% endif %}
         </td>
         </tr>
         {% empty %}
