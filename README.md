@@ -58,7 +58,7 @@ Por enquanto, a estrutura base está sendo validada e construída com foco na es
 ## 🔗 Acesso ao projeto
 
 - Repositório GitHub: [https://github.com/Ayram450/gerenciador-de-assinaturas-planos](#)
-
+- Drive do projeto: [https://drive.google.com/drive/folders/1hSt59KlDuReB7FnIH8p7xBiKMT_GGLQy?usp=sharing](#)
 ---
 
 ## 👩‍💻 Desenvolvedores
