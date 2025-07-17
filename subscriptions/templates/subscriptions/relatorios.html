@@ -70,6 +70,7 @@
                         <span class="px-2 py-1 rounded-full text-xs font-medium
                           {% if sub.status == 'pago' %} bg-green-100 text-green-700
                           {% elif sub.status == 'atrasado' %} bg-red-100 text-red-700
+                          {% elif sub.status == 'cancelado' %} bg-gray-200 text-gray-800
                           {% else %} bg-yellow-100 text-yellow-700 {% endif %}">
                           {{ sub.get_status_display }}
                         </span>

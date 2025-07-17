@@ -49,6 +49,13 @@ class SubscriptionListView(ListView):
         ).count()
 
         return context
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        response = super().form_valid(form)
+        hoje = timezone.now()
+        gerar_relatorio_do_mes(hoje.month, hoje.year, self.request.user)
+        return response
 
     def post(self, request, *args, **kwargs):
         subscription_id = request.POST.get("id")
@@ -105,6 +112,7 @@ class SubscriptionListView(ListView):
             )
 
         return redirect("assinaturas")
+        
 
 
 class SubscriptionCreateView(CreateView):
@@ -121,6 +129,12 @@ class SubscriptionUpdateView(UpdateView):
     def get_queryset(self):
         # Garante que só veja/edite suas próprias assinaturas
         return Subscription.objects.filter(user=self.request.user)
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        hoje = timezone.now()
+        gerar_relatorio_do_mes(hoje.month, hoje.year, self.request.user)
+        return response
 
 
 class SubscriptionDeleteView(DeleteView):
@@ -131,6 +145,11 @@ class SubscriptionDeleteView(DeleteView):
         # Garante que só exclua suas próprias assinaturas
         return Subscription.objects.filter(user=self.request.user)
 
+    def delete(self, request, *args, **kwargs):
+            response = super().delete(request, *args, **kwargs)
+            hoje = timezone.now()
+            gerar_relatorio_do_mes(hoje.month, hoje.year, request.user)
+            return response
 
 def pagamentos_view(request):
     q = request.GET.get("q")  # texto de busca
@@ -274,15 +293,6 @@ def lembretes(request):
     )
 
 @login_required
-def relatorios(request):
-    hoje = timezone.now()
-    gerar_relatorio_do_mes(hoje.month, hoje.year, request.user)
-    relatorios = RelatorioMensal.objects.filter(user=request.user).order_by('-ano', '-mes')
-    return render(request, 'subscriptions/relatorios.html', {'relatorios': relatorios})
-
-
-
-@login_required
 def perfil(request):
     user = request.user
     perfil, _ = Profile.objects.get_or_create(user=user)
@@ -315,6 +325,14 @@ def perfil(request):
         form = ProfileForm(instance=perfil)
 
     return render(request, "subscriptions/perfil.html", {"user": user, "form": form})
+
+
+@login_required
+def relatorios(request):
+    hoje = timezone.now()
+    gerar_relatorio_do_mes(hoje.month, hoje.year, request.user)
+    relatorios = RelatorioMensal.objects.filter(user=request.user).order_by('-ano', '-mes')
+    return render(request, 'subscriptions/relatorios.html', {'relatorios': relatorios})
 
 
 def gerar_relatorio_do_mes(mes, ano, user):

@@ -47,6 +47,7 @@ class Subscription(models.Model):
             ("pendente", "Pendente"),
             ("pago", "Pago"),
             ("atrasado", "Atrasado"),
+            ('cancelado', 'Cancelado'),
         ]
     
     nomeAssi = models.CharField(max_length=100, null=False, blank=False)
