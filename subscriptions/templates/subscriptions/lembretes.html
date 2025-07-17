@@ -29,7 +29,7 @@
     <div class="grid md:grid-cols-4 gap-6 mb-8">
       <div class="bg-white rounded-lg shadow p-4">
         <h3 class="text-sm font-medium text-gray-600 mb-1">Lembretes Ativos</h3>
-        <div class="text-2xl font-bold">{{ total_ativos }}</div>
+        <div class="text-2xl font-bold text-green-950">{{ total_ativos }}</div>
       </div>
       <div class="bg-white rounded-lg shadow p-4">
         <h3 class="text-sm font-medium text-gray-600 mb-1">Vencimento Atrasado</h3>
@@ -39,29 +39,15 @@
       </div>
       <div class="bg-white rounded-lg shadow p-4">
         <h3 class="text-sm font-medium text-gray-600 mb-1">Vencimento Próximo</h3>
-        <div class="text-2xl font-bold text-yellow-600">
+        <div class="text-2xl font-bold text-yellow-500">
           {% if data_proxima %}{{ data_proxima|date:"d/m/Y" }}{% else %}-{% endif %}
         </div>
       </div>
       <div class="bg-white rounded-lg shadow p-4">
         <h3 class="text-sm font-medium text-gray-600 mb-1">Total a Pagar</h3>
-        <div class="text-2xl font-bold text-green-600">R$ {{ valor_a_pagar|floatformat:2 }}</div>
+        <div class="text-2xl font-bold text-lime-500">R$ {{ valor_a_pagar|floatformat:2 }}</div>
       </div>
     </div>
-
-
-    {% comment %} <!-- Botão de adicionar lembrete -->
-    <div class="mb-6">
-      <button class="flex items-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-plus-icon lucide-bell-plus">
-            <path d="M10.268 21a2 2 0 0 0 3.464 0"/>
-            <path d="M15 8h6"/>
-            <path d="M18 5v6"/>
-            <path d="M20.002 14.464a9 9 0 0 0 .738.863A1 1 0 0 1 20 17H4a1 1 0 0 1-.74-1.673C4.59 13.956 6 12.499 6 8a6 6 0 0 1 8.75-5.332"/>
-        </svg>
-        Adicionar Lembrete
-      </button>
-    </div> {% endcomment %}
 
     <!-- Lista de lembretes  -->
     <div class="bg-white shadow rounded-lg p-4">
@@ -81,15 +67,15 @@
           </div>
 
           <!-- Dias restantes centralizados -->
-          <div class="w-40 text-center">
+          <div class="flex items-center space-x-2">
             {% if subscription.dias_restantes >= 0 %}
-              <div class="text-sm font-semibold
+              <div class="text-base font-semibold
                 {% if subscription.dias_restantes <= 2 %}
                   text-red-600
                 {% elif subscription.dias_restantes <= 5 %}
-                  text-yellow-600
+                  text-yellow-500
                 {% else %}
-                  text-green-600
+                  text-lime-500
                 {% endif %}">
                 {{ subscription.dias_restantes }} dia{% if subscription.dias_restantes != 1 %}s{% endif %}
               </div>
@@ -99,11 +85,8 @@
           </div>
 
           <!-- Ícone de notificação -->
-          <div class="ml-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-            </svg>
+           <div class="ml-4 px-3 py-1 bg-sky-200 text-blue-700 text-sm font-semibold rounded-full shadow">
+            🔔
           </div>
         </div>
         {% empty %}

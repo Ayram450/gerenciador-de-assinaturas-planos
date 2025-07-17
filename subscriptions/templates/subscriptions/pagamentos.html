@@ -28,19 +28,19 @@
     <!-- Estatísticas -->
     <div class="grid md:grid-cols-4 gap-6 mb-8">
       <div class="bg-white p-4 shadow rounded-lg">
-        <p class="text-sm text-gray-600">Pagamentos Pagos</p>
-        <div class="text-2xl font-bold text-green-600 mt-2">{{ pagos }}</div>
+        <p class="text-sm font-medium text-gray-600">Pagamentos Pagos</p>
+        <div class="text-2xl font-bold text-green-950 mt-2">{{ pagos }}</div>
       </div>
       <div class="bg-white p-4 shadow rounded-lg">
-        <p class="text-sm text-gray-600">Pagamentos Pendentes</p>
-        <div class="text-2xl font-bold text-yellow-600 mt-2">{{ pendentes }}</div>
+        <p class="text-sm font-medium text-gray-600">Pagamentos Pendentes</p>
+        <div class="text-2xl font-bold text-yellow-500 mt-2">{{ pendentes }}</div>
       </div>
       <div class="bg-white p-4 shadow rounded-lg">
-        <p class="text-sm text-gray-600">Total Pago este Mês</p>
-        <div class="text-2xl font-bold text-lime-600 mt-2">R$ {{ total_pago_mes|floatformat:2 }}</div>
+        <p class="text-sm font-medium text-gray-600">Total Pago este Mês</p>
+        <div class="text-2xl font-bold text-lime-500 mt-2">R$ {{ total_pago_mes|floatformat:2 }}</div>
       </div>
       <div class="bg-white p-4 shadow rounded-lg">
-        <p class="text-sm text-gray-600">Pagamentos Atrasados</p>
+        <p class="text-sm font-medium text-gray-600">Pagamentos Atrasados</p>
         <div class="text-2xl font-bold text-red-600 mt-2">{{ atrasados }}</div>
       </div>
     </div>
@@ -91,7 +91,7 @@
           </div>
 
           <div class="flex items-center space-x-2">
-            <span class="text-sm font-medium {% if subscription.status == 'pendente' %}text-orange-600{% elif subscription.status == 'pago' %}text-green-600{% else %}text-red-600{% endif %}">
+            <span class="text-base font-medium {% if subscription.status == 'pendente' %}text-yellow-500{% elif subscription.status == 'pago' %}text-lime-500{% else %}text-red-600{% endif %}">
               {{ subscription.get_status_display }}
             </span>
 
@@ -109,12 +109,10 @@
           </div>
         </div>
         {% empty %}
-        <p class="text-gray-500">Nenhuma assinatura cadastrada.</p>
+        <p class="text-gray-500">Sem Assinaturas</p>
         {% endfor %}
       </div>
     </div>
-
-
 
   </div>
 </body>

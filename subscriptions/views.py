@@ -161,11 +161,14 @@ def pagamentos_view(request):
 
     # Estatísticas (independentes dos filtros aplicados)
     all_subs = Subscription.objects.filter(user=request.user)
+    hoje = timezone.now().date()
     pagos = all_subs.filter(status="pago").count()
-    pendentes = all_subs.filter(status="pendente").count()
+    pendentes = all_subs.filter(
+        status="pendente",
+        data_venc__year=hoje.year,
+        data_venc__month=hoje.month).count()
     atrasados = all_subs.filter(status="atrasado").count()
 
-    hoje = timezone.now().date()
     total_pago_mes = (
         all_subs.filter(
             status="pago",
@@ -272,6 +275,8 @@ def lembretes(request):
 
 @login_required
 def relatorios(request):
+    hoje = timezone.now()
+    gerar_relatorio_do_mes(hoje.month, hoje.year, request.user)
     relatorios = RelatorioMensal.objects.filter(user=request.user).order_by('-ano', '-mes')
     return render(request, 'subscriptions/relatorios.html', {'relatorios': relatorios})
 

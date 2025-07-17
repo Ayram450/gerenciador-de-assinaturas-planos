@@ -99,8 +99,10 @@
       <h2 class="text-lg font-semibold mb-1">Exportar Todos os Relatórios</h2>
       <p class="text-gray-500 mb-4">Exporte todos os seus dados em formato PDF</p>
       
-      <div class="flex flex-wrap gap-4">
-        <a href="{% url 'relatorio_pdf' %}" class="bg-blue-600 text-white px-4 py-2 rounded flex items-center hover:bg-blue-700 transition">
+      <div class="flex flex-wrap gap-4 items-center">
+        <a href="{% url 'relatorio_pdf' %}" 
+          id="btnExportar"
+          class="bg-blue-600 text-white px-4 py-2 rounded flex items-center hover:bg-blue-700 transition">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
             class="mr-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 15V3"/>
@@ -109,7 +111,25 @@
           </svg>
           Exportar Relatório Completo (PDF)
         </a>
+
+        <span id="msgSucesso" class="text-green-600 font-semibold ml-4" style="display:none;">
+          Exportação concluída com sucesso!
+        </span>
       </div>
+      <script>
+        const btn = document.getElementById("btnExportar");
+        const msg = document.getElementById("msgSucesso");
+
+        btn.addEventListener("click", function(event) {
+          // Exibe a mensagem de sucesso
+          msg.style.display = "inline";
+
+          // Opcional: some a mensagem após 5 segundos
+          setTimeout(() => {
+            msg.style.display = "none";
+          }, 5000);
+        });
+      </script>
     </div>
 
   </div>

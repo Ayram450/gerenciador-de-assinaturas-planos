@@ -23,13 +23,13 @@
         <a href="{% url 'perfil' %}" class="text-gray-500 hover:text-gray-900">Perfil</a>
       </nav>
       <div class="flex items-center space-x-4 text-sm font-medium">
-        <a href="{% url 'account_logout' %}" class="text-gray-900 hover:underline">Sair</a>
+        <a href="{% url 'account_logout' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Sair</a>
       </div>
     </div>
   </header>
 
     <!-- Conteúdo principal -->
-    <main class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8">
       <!-- Título -->
       <div class="mb-8">
         <h2 class="text-3xl font-bold text-gray-900 mb-2">Gerenciar Assinaturas</h2>
@@ -39,21 +39,24 @@
       <div class="grid md:grid-cols-4 gap-6 mb-8">
         <div class="bg-white shadow rounded-lg p-4">
           <p class="text-sm font-medium text-gray-600">Total de Assinaturas</p>
-          <p class="text-2xl font-bold">{{ total_subscriptions }}</p>
+          <p class="text-2xl font-bold text-green-950">{{ total_subscriptions }}</p>
         </div>
         <div class="bg-white shadow rounded-lg p-4">
           <p class="text-sm font-medium text-gray-600">Gasto Total</p>
-          <p class="text-2xl font-bold">R$ {{ total_valor_mensal|floatformat:2|intcomma }}</p>
+          <p class="text-2xl font-bold text-lime-500">R$ {{ total_valor_mensal|floatformat:2|intcomma }}</p>
         </div>
         <div class="bg-white shadow rounded-lg p-4">
           <p class="text-sm font-medium text-gray-600">Próximos Vencimentos</p>
-          <p class="text-2xl font-bold">{{ proximos_vencimentos }}</p>
+          <p class="text-2xl font-bold text-yellow-500">{{ proximos_vencimentos }}</p>
         </div>
+        <div class="bg-white text-blue-800 shadow rounded-lg p-4 flex flex-col justify-between">
+          <p class="text-sm font-medium flex items-center gap-2">
+            💡 Assinaturas sob controle
+          </p>
+          <p class="text-2xl font-bold mt-1">
+            💸 Mais valor, <span class="underline decoration-blue-300">menos gasto.</span>
+          </p>
         </div>
-       {#<div class="bg-white shadow rounded-lg p-4">#}
-           {#<p class="text-sm font-medium text-gray-600">Economia Anual</p>#}
-          {#<p class="text-2xl font-bold text-green-600" id="economia-anual">--</p>#}
-      {#</div>#}
       </div>
 
       <!-- Ações rápidas -->
@@ -76,7 +79,7 @@
               <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
               <path d="M9 14h6" />
             </svg>
-              Ver Relatórios
+              Acompanhar Relatórios
             </a>
             <a href="{% url 'lembretes' %}" class="w-full flex items-center border px-4 py-2 rounded hover:bg-gray-100">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="mr-2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-bell-ring-icon lucide-bell-ring">
@@ -85,7 +88,7 @@
                 <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>
                 <path d="M4 2C2.8 3.7 2 5.7 2 8"/>
               </svg>
-              Configurar Lembretes
+              Ver Lembretes
             </a>
             <a href="{% url 'pagamentos' %}" class="w-full flex items-center border px-4 py-2 rounded hover:bg-gray-100">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" class="mr-2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-banknote-arrow-up-icon lucide-banknote-arrow-up">
@@ -99,7 +102,7 @@
               Gerenciar Pagamentos
             </a>
           </div>
-        </div>
+      </div>
 
       <!-- Formulário adicionar (funcional) -->
       <div class="bg-white shadow rounded-lg p-4">
@@ -107,97 +110,100 @@
 
         <form method="post" action="" class="space-y-3">
           {% csrf_token %}
-      <input type="text" name="nomeAssi" id="form-nome" placeholder="Nome" class="w-full border px-4 py-2 rounded" required />
-      <input type="text" name="empresa" placeholder="Empresa" class="w-full border px-4 py-2 rounded" required />
-      <input type="number" name="valorMens" step="0.01" placeholder="Preço" class="w-full border px-4 py-2 rounded" required />
+          <input type="text" name="nomeAssi" id="form-nome" placeholder="Nome do Plano" class="w-full border px-4 py-2 rounded placeholder-gray-900" required />
+          <input type="text" name="empresa" placeholder="Empresa" class="w-full border px-4 py-2 rounded placeholder-gray-900" required />
+          <input type="number" name="valorMens" step="0.01" placeholder="Valor Mensal (R$)" class="w-full border px-4 py-2 rounded placeholder-gray-900" required />
 
-      <!-- Dia e Mês (será transformado em data completa no backend) -->
-      <input type="date" name="data_venc" class="w-full border px-4 py-2 rounded" required />
+          <!-- Dia e Mês (será transformado em data completa no backend) -->
+          <input type="date" name="data_venc" class="w-full border px-4 py-2 rounded" required />
 
-      <select class="w-full border px-4 py-2 rounded" name="categoria" required>
-        <option value="" disabled selected>Selecione a categoria</option>
-        <option value="entretenimento">Entretenimento</option>
-        <option value="musica">Música</option>
-        <option value="jogos">Jogos</option>
-        <option value="educacao">Educação</option>
-        <option value="produtividade">Produtividade</option>
-        <option value="design">Design / Criativo</option>
-        <option value="financeiro">Financeiro</option>
-        <option value="alimentacao">Alimentação</option>
-        <option value="saude">Saúde</option>
-        <option value="transporte">Transporte</option>
-        <option value="casa">Casa e Serviços</option>
-        <option value="pets">Pets</option>
-        <option value="compras">Compras / Delivery</option>
-        <option value="internet">Internet / Dados</option>
-        <option value="softwares">Softwares / Apps</option>
-        <option value="beleza">Beleza e Estética</option>
-        <option value="bem-estar">Bem-estar</option>
-        <option value="comunicacao">Comunicação</option>
-        <option value="outros">Outros</option>
-      </select>
+          <select class="w-full border px-4 py-2 rounded" name="categoria" required>
+            <option value="" disabled selected>Selecione a categoria</option>
+            <option value="entretenimento">Entretenimento</option>
+            <option value="musica">Música</option>
+            <option value="jogos">Jogos</option>
+            <option value="educacao">Educação</option>
+            <option value="produtividade">Produtividade</option>
+            <option value="design">Design / Criativo</option>
+            <option value="financeiro">Financeiro</option>
+            <option value="alimentacao">Alimentação</option>
+            <option value="saude">Saúde</option>
+            <option value="transporte">Transporte</option>
+            <option value="casa">Casa e Serviços</option>
+            <option value="pets">Pets</option>
+            <option value="compras">Compras / Delivery</option>
+            <option value="internet">Internet / Dados</option>
+            <option value="softwares">Softwares / Apps</option>
+            <option value="beleza">Beleza e Estética</option>
+            <option value="bem-estar">Bem-estar</option>
+            <option value="comunicacao">Comunicação</option>
+            <option value="outros">Outros</option>
+          </select>
 
-      <select name="metPagar" class="w-full border px-4 py-2 rounded" required>
-        <option value="" disabled selected>Método de Pagamento</option>
-        <option value="debito">Débito</option>
-        <option value="credito">Crédito</option>
-        <option value="boleto">Boleto</option>
-        <option value="pix">Pix</option>
-      </select>
+          <select name="metPagar" class="w-full border px-4 py-2 rounded" required>
+            <option value="" disabled selected>Método de Pagamento</option>
+            <option value="debito">Débito</option>
+            <option value="credito">Crédito</option>
+            <option value="boleto">Boleto</option>
+            <option value="pix">Pix</option>
+          </select>
 
-      <button type="submit" class="w-full bg-black text-white py-2 rounded">Salvar</button>
-      </form>
+          <button type="submit" class="w-full bg-black text-white py-2 rounded">Salvar</button>
+        </form>
       </div>
-
+    </div>
 
       <!-- Lista de Assinaturas -->
-      <div class="bg-white shadow rounded-lg p-4">
-        <h3 class="text-lg font-semibold mb-4">Minhas Assinaturas</h3>
-        <div class="space-y-4">
-          {% for subscription in subscription_list %}
-          <div class="p-4 border rounded flex justify-between items-center">
-            <div>
-              <p class="font-semibold">{{ subscription.nomeAssi }} - {{ subscription.empresa }}</p>
-              <p class="text-sm text-gray-500">
-                R$ {{ subscription.valorMens }} | Vencimento: {{ subscription.data_venc|date:"d/m" }}
-              </p>
-              <p class="text-sm text-gray-500">{{ subscription.get_categoria_display }}</p>
-            </div>
-            <div class="flex items-center space-x-2">
-              <span class="text-sm text-green-600 font-medium">Ativa</span>
+      <div class="grid grid-cols-1">
+        <div class="bg-white shadow rounded-lg p-4 w-full">
+            <h3 class="text-lg font-semibold mb-4">Minhas Assinaturas</h3>
+            <div class="space-y-4">
+              {% for subscription in subscription_list %}
+              <div class="p-4 border rounded flex justify-between items-center">
+                <div>
+                  <p class="font-semibold">{{ subscription.nomeAssi }} - {{ subscription.empresa }}</p>
+                  <p class="text-sm text-gray-500">
+                    R$ {{ subscription.valorMens }} | Vencimento: {{ subscription.data_venc|date:"d/m" }}
+                  </p>
+                  <p class="text-sm text-gray-500">{{ subscription.get_categoria_display }}</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="text-sm text-green-600 font-medium">Ativa</span>
 
-              <button
-                onclick="abrirModal(
-                  '{{ subscription.id }}',
-                  '{{ subscription.nomeAssi }}',
-                  '{{ subscription.empresa }}',
-                  '{{ subscription.valorMens|floatformat:"2" }}',
-                  '{{ subscription.data_venc|date:"Y-m-d" }}',
-                  '{{ subscription.categoria }}',
-                  '{{ subscription.metPagar }}'
-                )"
-                class="bg-blue-500 text-white px-2 py-1 rounded text-sm"
-              >
-                Editar
-              </button>
+                  <button
+                    onclick="abrirModal(
+                      '{{ subscription.id }}',
+                      '{{ subscription.nomeAssi }}',
+                      '{{ subscription.empresa }}',
+                      '{{ subscription.valorMens|floatformat:"2" }}',
+                      '{{ subscription.data_venc|date:"Y-m-d" }}',
+                      '{{ subscription.categoria }}',
+                      '{{ subscription.metPagar }}'
+                    )"
+                    class="bg-blue-500 text-white px-2 py-1 rounded text-sm"
+                  >
+                    Editar
+                  </button>
 
-              <form method="post" action="{% url 'excluir_assinatura' subscription.id %}">
-                {% csrf_token %}
-                <button
-                  type="submit"
-                  class="bg-red-500 text-white px-2 py-1 rounded text-sm"
-                  onclick="return confirm('Tem certeza que deseja excluir esta assinatura?');"
-                >
-                  Excluir
-                </button>
-              </form>
+                  <form method="post" action="{% url 'excluir_assinatura' subscription.id %}">
+                    {% csrf_token %}
+                    <button
+                      type="submit"
+                      class="bg-red-500 text-white px-2 py-1 rounded text-sm"
+                      onclick="return confirm('Tem certeza que deseja excluir esta assinatura?');"
+                    >
+                      Excluir
+                    </button>
+                  </form>
+                </div>
+              </div>
+              {% empty %}
+              <p class="text-gray-500">Nenhuma assinatura cadastrada.</p>
+              {% endfor %}
             </div>
-          </div>
-          {% empty %}
-          <p class="text-gray-500">Nenhuma assinatura cadastrada.</p>
-          {% endfor %}
         </div>
       </div>
+   
 
       <!-- Modal de Edição FUNCIONAL -->
       <div id="modal-editar" class="fixed inset-0 bg-black bg-opacity-30 hidden items-center justify-center z-50">
